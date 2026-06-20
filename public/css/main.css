@@ -1,0 +1,20 @@
+@layer tokens, base, layout, components, utilities, vendor;
+
+/* TOKENS */
+@import "./tokens/colors.css" layer(tokens);
+@import "./tokens/variables.css" layer(tokens);
+/* @import "./tokens/fonts.css" layer(tokens); */
+
+/* BASE */
+@import "./base/elements.css" layer(base);
+@import "./base/reset.css" layer(base);
+
+/* LAYOUT */
+
+/* COMPONENTS */
+@import "./components/theme-toggle.css" layer(components);
+
+/* UTILITIES */
+@import "./utilities/utilities.css" layer(utilities);
+
+/* VENDOR */

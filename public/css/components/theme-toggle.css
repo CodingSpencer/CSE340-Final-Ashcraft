@@ -1,0 +1,219 @@
+/* Baseline Fallback */
+:root {
+    color-scheme: light;
+}
+
+/* Shift engine state to dark if the dark input is checked */
+html:has(input[name="theme-preference"][value="dark"]:checked) {
+    color-scheme: dark;
+}
+
+/* Check system settings only if the user chooses 'system' */
+@media (prefers-color-scheme: dark) {
+    html:has(input[name="theme-preference"][value="system"]:checked) {
+        color-scheme: dark;
+    }
+}
+
+details.theme-switcher {
+    position: relative;
+    display: inline-block;
+    width: max-content;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    flex-shrink: 0;
+    box-shadow: none;
+    overflow: visible;
+    color: inherit;
+
+    &:focus,
+    &:focus-visible {
+        outline: none;
+    }
+
+    /* Target the toggle button wrapper */
+    > summary.theme-control {
+        text-transform: none;
+        font-weight: normal;
+        list-style: none;
+        width: max-content;
+        box-sizing: border-box;
+        display: inline-list-item;
+        align-items: center;
+        justify-content: center;
+        min-width: calc(var(--icon-size-md) + 5rem);
+        min-height: calc(var(--icon-size-md) + var(--spacing-md));
+        margin: 0;
+        padding: 0 var(--spacing-md);
+        font-size: var(--icon-size-md); 
+        line-height: 1;
+        color: var(--header-text);
+        background-color: var(--theme-toggle-bg, transparent);
+        border: 1px solid var(--theme-toggle-border, var(--border-color));
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        transition:
+            background-color var(--transition-base, 0.2s),
+            border-color var(--transition-base, 0.2s);
+
+        &::-webkit-details-marker {
+            display: inline-block;
+            margin-right: var(--spacing-xs, 4px);
+            color: inherit;
+        }
+
+        &::marker {
+            display: inline-block;
+            margin-right: var(--spacing-xs, 4px);
+            color: inherit;
+        }
+
+        &::after {
+            font-size: 0.9rem; 
+            font-family: inherit;
+            margin-left: var(--spacing-xs, 4px);
+            vertical-align: middle;
+        }
+
+        &:hover {
+            background-color: var(--surface-color);
+            border-color: var(--accent-color);
+        }
+
+        &:focus {
+            outline: none;
+        }
+
+        &:focus-visible {
+            outline: var(--outline-width, 2px) solid var(--accent-color);
+            outline-offset: var(--outline-width, 2px);
+        }
+    }
+
+    /* Target the dropdown panel container */
+    > .theme-extra {
+        position: absolute;
+        z-index: 50;
+        top: calc(100% + var(--spacing-sm));
+        right: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xs, 4px);
+        padding: var(--spacing-xs, 4px);
+        background-color: var(--surface-color, #1e1e1e);
+        border: 1px solid var(--border-color, #333333);
+        border-radius: var(--radius-sm);
+        width: max-content;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    &:not([open]) > .theme-extra {
+        display: none;
+    }
+
+    &[open] > .theme-extra {
+        animation: theme-extra-reveal 0.2s ease-out;
+    }
+
+    /* Style the option rows inside the panel */
+    .theme-label {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-radius: var(--radius-xs, 4px);
+        cursor: pointer;
+        width: 100%;
+        box-sizing: border-box;
+        transition: background-color var(--transition-base, 0.2s), color var(--transition-base, 0.2s);
+
+        &:hover {
+            background-color: var(--bg-color);
+        }
+
+        input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+            margin: 0;
+            pointer-events: none;
+        }
+
+        /* 
+           FIXED LOCAL SELECTION HIGHLIGHT: 
+           Changes row colors and internal text spans immediately when input is checked 
+        */
+        &:has(input:checked) {
+            background-color: var(--border-color) !important;
+            font-weight: bold !important;
+
+            /* Select all text/emoji spans inside the active row option */
+            span {
+                color: var(--accent-color) !important;
+            }
+        }
+
+        /* Focus state indicator */
+        &:has(input:focus-visible) {
+            outline: var(--outline-width, 2px) solid var(--accent-color);
+            outline-offset: calc(var(--outline-width, 2px) * -1); 
+        }
+    }
+}
+
+/* Global Pseudo-Element Sync Engine (Button Updates) */
+html:has(input[name='theme-preference'][value='light']:checked) {
+    & details.theme-switcher > summary.theme-control::before {
+        content: '☀️ ';
+    }
+    & details.theme-switcher > summary.theme-control::after {
+        content: 'Light';
+    }
+}
+
+html:has(input[name='theme-preference'][value='dark']:checked) {
+    & details.theme-switcher > summary.theme-control::before {
+        content: '🌖 ';
+    }
+    & details.theme-switcher > summary.theme-control::after {
+        content: 'Dark';
+    }
+}
+
+html:has(input[name='theme-preference'][value='system']:checked) {
+    & details.theme-switcher > summary.theme-control::before {
+        content: '⚙️ ';
+    }
+    & details.theme-switcher > summary.theme-control::after {
+        content: 'System';
+    }
+}
+
+/* Helper to accessibly hide layout text definitions */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@keyframes theme-extra-reveal {
+    from {
+        transform: translateY(-0.4rem);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

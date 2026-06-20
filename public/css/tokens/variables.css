@@ -1,0 +1,91 @@
+:root {
+    /* --- DESIGN SYSTEM CORE SCALES --- */
+
+    /* SPACING (Normalized Multiplier Engine) */
+    --space-unit: 8px;
+    --space-xs: calc(var(--space-unit) * 0.5);   /* 4px */
+    --space-sm: var(--space-unit);                 /* 8px */
+    --space-md: clamp(1rem, 0.73rem + 1.36vw, 1.5rem);       /* 16-24px */
+    --space-lg: clamp(1.5rem, 1.05rem + 2.27vw, 2.33rem);       /* 24-37px */
+    --space-xl: clamp(2rem, 1.27rem + 3.64vw, 3.33rem);       /* 32-53px */
+
+    /* RADII (Linked directly to spacing proportions) */
+    --radius-sm: calc(var(--space-unit) * 0.5);   /* 4px */
+    --radius-md: var(--space-unit);                 /* 8px */
+    --radius-lg: calc(var(--space-unit) * 1.5);     /* 12px */
+
+    /* INDENTATION ALIGNMENTS */
+    --indent-sm: var(--space-sm);
+    --indent-md: var(--space-md);
+    --indent-lg: var(--space-lg);
+
+    /* --- TYPOGRAPHY ENGINE --- */
+
+    /* Font Families */
+    
+    /* Custom Fonts Definition */
+    --font-heading-custom: "Major Mono Display", monospace;
+    --font-body-custom: "Lora", Georgia, serif;
+
+    /* REFIXED: Both variables are explicitly mapped to distinct, verified roles */
+    --font-family-heading: var(--font-heading-custom);
+    --font-family-body: var(--font-body-custom);
+
+    /* Font Sizes (Normalized rem-scale based on 16px base browser standard) */
+    --font-size-sm: 0.875rem; /* ~14px */
+    --font-size-md: 1rem;     /* ~16px */
+    --font-size-lg: clamp(1.25rem, 1.14rem + 0.57vw, 1.5rem);  /* ~20-24px */
+    --font-size-xl: clamp(1.5rem, 1.27rem + 0.57vw, 2rem);  /* ~32-40px */
+    --font-size-hero: clamp(2.25rem, 1.95rem + 2.73vw, 3.7rem);  /* ~40-60px */
+
+    /* Semantic Roles */
+    --font-size-body: var(--font-size-md);
+    --font-size-caption: var(--font-size-sm);
+    --font-size-heading-sm: var(--font-size-lg);
+    --font-size-heading-md: var(--font-size-xl);
+    --font-size-display-sm: var(--font-size-hero);
+
+
+    /* Font Weights */
+    --font-light: 300;
+    --font-regular: 400;
+    --font-medium: 500;
+    --font-semibold: 600;
+    --font-bold: 700;
+    
+    /* Text Metrics */
+    --line-height-body: 1.6;
+    --line-height-heading: 1.25;
+    --line-height-display: 1.1;
+
+
+    /* --- GLOBAL INTERACTION LAYOUT TOKENS --- */
+
+    /* Transitions & Motion */
+    --transition-base: 0.2s ease;
+
+    /* Interactive Element Indicators */
+    --outline-width: 2px;
+
+    /* Component Architecture Dimensions */
+    --icon-size-sm: 24px;
+    --icon-size-md: 32px;
+
+    /* ELEVATION & SHADOWS (Upgraded for dynamic dark mode rendering) */
+    --shadow-sm: 
+        0 1px 2px light-dark(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.2)), 
+        0 2px 4px light-dark(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.25));
+        
+    --shadow-md: 
+        0 4px 6px light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.3)), 
+        0 8px 24px light-dark(rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.45));
+
+    --text-shadow-hero: 
+        0 2px 4px rgba(0, 0, 0, 0.4),
+        0 4px 12px rgba(0, 0, 0, 0.3);
+
+    /* GLASS BACKGROUNDS */
+    /* Light Mode: Milky white transparency | Dark Mode: Sleek dark slate transparency */
+    --surface-glass: light-dark(rgba(255, 255, 255, 0.45), rgba(30, 30, 30, 0.65));
+    --border-glass: light-dark(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
+}

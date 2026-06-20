@@ -1,0 +1,48 @@
+:root {
+    /* SEEDS (Extracted from your light mode values) */
+    --seed-bg: #ffffff;
+    --seed-surface: #f5f5f5;
+    
+    --seed-text: #111111;
+    --seed-text-muted: #555555;
+    
+    /* Primary brand green hue (142) mapped dynamically to your accent tokens */
+    --seed-accent: oklch(0.48 0.12 142.1); 
+    --seed-accent-hover: #22c55e;
+    
+    /* Dedicated blue seed for your links */
+    --seed-link: #1a73e8;
+    --seed-link-hover: #1558b0;
+    
+    --seed-border: #e5e5e5;
+}
+
+:root {
+    /* ACCENT RAMP (Derived automatically from your primary green brand seed) */
+    --accent-200: color-mix(in oklch, var(--seed-accent) 30%, white);
+    --accent-300: color-mix(in oklch, var(--seed-accent) 50%, white);
+    --accent-400: color-mix(in oklch, var(--seed-accent) 75%, white);
+    --accent-500: var(--seed-accent);
+    --accent-600: color-mix(in oklch, var(--seed-accent) 80%, black);
+    --accent-700: color-mix(in oklch, var(--seed-accent) 60%, black);
+    --accent-800: color-mix(in oklch, var(--seed-accent) 40%, black);
+}
+
+:root {
+    /* SEMANTIC TOKENS (The clean implementation using your seed architecture) */
+    --title-color: light-dark(var(--seed-accent), oklch(0.81 0.17 142.5));
+
+    --bg-color: light-dark(var(--seed-bg), oklch(0.18 0.005 140));
+    --surface-color: light-dark(var(--seed-surface), oklch(0.24 0.005 140));
+
+    --text-color: light-dark(var(--seed-text), oklch(0.95 0 0));
+    --text-muted: light-dark(var(--seed-text-muted), oklch(0.74 0 0));
+
+    --primary-color: light-dark(var(--seed-accent), oklch(0.74 0.19 141.5));
+    --accent-color: light-dark(var(--seed-accent-hover), oklch(0.81 0.17 142.5));
+
+    --link-color: light-dark(var(--seed-link), oklch(0.71 0.13 243.7));
+    --link-hover-color: light-dark(var(--seed-link-hover), oklch(0.81 0.09 239.5));
+
+    --border-color: light-dark(var(--seed-border), oklch(0.32 0.005 140));
+}
