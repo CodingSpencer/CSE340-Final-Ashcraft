@@ -23,6 +23,12 @@ The project will be built using:
 ```
 /public
     /css
+        /base
+        /components
+        /layout
+        /tokens
+        /utilities
+        main.css
 /src
     /controllers
     /database
