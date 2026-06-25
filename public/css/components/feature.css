@@ -1,0 +1,12 @@
+.features {
+    max-width: 1440px;
+    margin: var(--space-xl) auto;
+    padding: 0 var(--space-lg);
+}
+
+.feature-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(clamp(280px, 25vw, 360px), 1fr));
+    gap: var(--space-lg);
+}

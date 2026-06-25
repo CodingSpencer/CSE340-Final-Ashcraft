@@ -3,7 +3,7 @@ import expressLayouts from 'express-ejs-layouts';
 
 const app = express();
 
-app.use(express.static('public'));
+app.use(express.static('.'));
 
 // Set EJS as the template engine
 app.set('view engine', 'ejs');
@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log('Server is running on: http://localhost:3000');
+    console.log('Server is running on: http://localhost:3000');
 });
 
 export default app;
