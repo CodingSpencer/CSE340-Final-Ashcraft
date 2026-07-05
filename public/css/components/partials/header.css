@@ -1,0 +1,66 @@
+header {
+  background-color: var(--surface-color);
+  border-bottom: 1px solid var(--border-color);
+  padding: var(--space-sm) var(--space-lg); 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+/* Base navigation structural containers */
+nav.pages,
+nav.user {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+/* FIX 1: Explicitly target your actual class paths so the browser applies the rules */
+nav.pages a,
+nav.user a {
+    font-size: var(--font-size-body);
+    transition: font-size var(--transition-base), gap var(--transition-base);
+}
+
+/* Image Logo constraints */
+img.logo {
+    height: clamp(32px, 4vh, 48px);
+    width: auto; 
+    object-fit: contain;
+    display: block;
+    transition: transform var(--transition-base), filter var(--transition-base);
+}
+
+/* Interactive feedback for the logo link wrapper */
+nav.pages a:first-of-type {
+    display: inline-flex;
+    align-items: center;
+}
+
+nav.pages a:first-of-type:hover img.logo {
+    transform: scale(1.04);
+}
+
+@media (prefers-color-scheme: dark) {
+    img.logo {
+        filter: brightness(0.9) contrast(1.1);
+    }
+}
+
+@media (min-width: 1024px) {
+    nav.pages a,
+    nav.user a {
+        font-size: var(--font-size-lg);
+    }
+    
+    nav.pages,
+    nav.user {
+        gap: var(--space-lg);
+    }
+    
+    img.logo {
+        height: 56px;
+    }
+}

@@ -1,0 +1,89 @@
+-- Create Extensions if needed
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- 1. USERS TABLE
+CREATE TABLE public.users (
+    user_id SERIAL PRIMARY KEY,
+    firstname VARCHAR(50) NOT NULL,
+    lastname VARCHAR(50) NOT NULL,
+    email VARCHAR(150) UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    role VARCHAR(20) NOT NULL DEFAULT 'Customer' CHECK (role IN ('Guest', 'Customer', 'Employee', 'Owner')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2. CATEGORIES TABLE
+CREATE TABLE public.categories (
+    category_id SERIAL PRIMARY KEY,
+    category_name VARCHAR(50) UNIQUE NOT NULL
+);
+
+-- 3. VEHICLES TABLE
+CREATE TABLE public.vehicles (
+    vehicle_id SERIAL PRIMARY KEY,
+    category_id INT NOT NULL,
+    make VARCHAR(50) NOT NULL,
+    model VARCHAR(50) NOT NULL,
+    year INT NOT NULL CHECK (year >= 1886 AND year <= EXTRACT(YEAR FROM CURRENT_DATE) + 1),
+    mileage INT NOT NULL CHECK (mileage >= 0),
+    price NUMERIC(10, 2) NOT NULL CHECK (price >= 0.00),
+    description TEXT,
+    availability BOOLEAN NOT NULL DEFAULT TRUE,
+    CONSTRAINT fk_vehicle_category FOREIGN KEY (category_id) 
+        REFERENCES public.categories(category_id) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- 4. VEHICLE IMAGES TABLE
+CREATE TABLE public.vehicle_images (
+    image_id SERIAL PRIMARY KEY,
+    vehicle_id INT NOT NULL,
+    image_path TEXT NOT NULL,
+    CONSTRAINT fk_image_vehicle FOREIGN KEY (vehicle_id) 
+        REFERENCES public.vehicles(vehicle_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- 5. REVIEWS TABLE
+CREATE TABLE public.reviews (
+    review_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    vehicle_id INT NOT NULL,
+    rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    review_text TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_review_user FOREIGN KEY (user_id) 
+        REFERENCES public.users(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_review_vehicle FOREIGN KEY (vehicle_id) 
+        REFERENCES public.vehicles(vehicle_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- 6. SERVICE REQUESTS TABLE
+CREATE TABLE public.service_requests (
+    request_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    vehicle_id INT NOT NULL,
+    service_type VARCHAR(100) NOT NULL,
+    notes TEXT,
+    status VARCHAR(20) NOT NULL DEFAULT 'Submitted' CHECK (status IN ('Submitted', 'In Progress', 'Completed')),
+    employee_notes TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_service_user FOREIGN KEY (user_id) 
+        REFERENCES public.users(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_service_vehicle FOREIGN KEY (vehicle_id) 
+        REFERENCES public.vehicles(vehicle_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- 7. CONTACT MESSAGES TABLE
+CREATE TABLE public.contact_messages (
+    message_id SERIAL PRIMARY KEY,
+    firstname VARCHAR(50) NOT NULL,
+    lastname VARCHAR(50) NOT NULL,
+    email VARCHAR(150) NOT NULL,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- INDEXES FOR PERFORMANCE OPTIMIZATION
+CREATE INDEX idx_vehicles_category ON public.vehicles(category_id);
+CREATE INDEX idx_vehicle_images_vehicle ON public.vehicle_images(vehicle_id);
+CREATE INDEX idx_reviews_vehicle ON public.reviews(vehicle_id);
+CREATE INDEX idx_service_requests_user ON public.service_requests(user_id);

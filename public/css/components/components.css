@@ -1,0 +1,12 @@
+/* Components */
+@import "./hero.css";
+@import "./card.css";
+@import "./feature.css";    
+@import "./theme-toggle.css";
+
+/* Partials */
+@import "./partials/header.css";   
+@import "./partials/footer.css";
+
+/* Pages */
+@import "./pages/home.css";
