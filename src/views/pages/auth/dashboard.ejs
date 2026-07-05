@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+</head>
+<body>
+  <h1>Dashboard</h1>
+
+  <% if (flashMessages && flashMessages.length) { %>
+    <% flashMessages.forEach((message) => { %>
+      <p><%= message.message %></p>
+    <% }) %>
+  <% } %>
+
+  <p>Welcome, <%= user.name %>!</p>
+
+  <form method="POST" action="/logout">
+    <button type="submit">Log out</button>
+  </form>
+</body>
+</html>

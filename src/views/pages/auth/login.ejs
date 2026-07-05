@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+</head>
+<body>
+  <h1>Login</h1>
+
+  <% if (flashMessages && flashMessages.length) { %>
+    <% flashMessages.forEach((message) => { %>
+      <p><%= message.message %></p>
+    <% }) %>
+  <% } %>
+
+  <form method="POST" action="/login">
+    <label>Email
+      <input type="email" name="email" required />
+    </label>
+    <label>Password
+      <input type="password" name="password" required />
+    </label>
+    <button type="submit">Log in</button>
+  </form>
+
+  <p>Need an account? <a href="/register">Register</a></p>
+</body>
+</html>
