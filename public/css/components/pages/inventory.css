@@ -1,0 +1,143 @@
+/* Layout spacing for the page */
+h1 {
+    margin-bottom: var(--space-lg);
+}
+
+.inventory-filters {
+    margin-bottom: var(--space-xl);
+    padding: var(--space-md);
+    background: var(--surface-secondary);
+    border-radius: var(--radius-md);
+}
+
+/* 4-Column Grid Layout */
+.vehicle-grid {
+    display: grid;
+    /* This creates 4 equal columns */
+    grid-template-columns: repeat(4, 1fr);
+    /* Adds the generous spacing between cards */
+    gap: var(--space-xl);
+    margin-top: var(--space-lg);
+}
+
+/* Responsive adjustment: Switch to 2 columns on tablets, 1 on mobile */
+@media (max-width: 1024px) {
+    .vehicle-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .vehicle-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--space-xl);
+    color: var(--text-muted);
+}
+
+/* Vehicle Detail Page */
+.vehicle-detail {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+    align-items: start;
+}
+
+@media (max-width: 768px) {
+    .vehicle-detail {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Image Gallery */
+.vehicle-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.vehicle-gallery-main {
+    width: 100%;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background-color: var(--bg-secondary, #f0f0f0);
+    border: 1px solid var(--border-color);
+}
+
+.vehicle-gallery-main img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+.vehicle-gallery-thumbnails {
+    display: flex;
+    gap: var(--space-xs);
+    flex-wrap: wrap;
+}
+
+.gallery-thumb {
+    width: 80px;
+    height: 60px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    cursor: pointer;
+    padding: 0;
+    background: none;
+    transition: border-color var(--transition-base), opacity var(--transition-base);
+    opacity: 0.7;
+}
+
+.gallery-thumb:hover {
+    border-color: var(--primary-color);
+    opacity: 1;
+}
+
+.gallery-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Vehicle Info on Detail Page */
+.vehicle-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.vehicle-info p {
+    margin: 0;
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+}
+
+.vehicle-description {
+    margin-top: var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--border-color);
+}
+
+.vehicle-description h2 {
+    margin: 0 0 var(--space-sm) 0;
+    font-size: 1.1rem;
+    color: var(--title-color);
+}
+
+.vehicle-description p {
+    color: var(--text-muted);
+    line-height: var(--line-height-body);
+}
+
+.vehicle-actions {
+    grid-column: 1 / -1;
+    margin-top: var(--space-md);
+}

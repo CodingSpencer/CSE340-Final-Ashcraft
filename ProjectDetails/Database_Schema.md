@@ -35,7 +35,7 @@
 | **mileage** | INT | NOT NULL, Check >= 0 | Current vehicle mileage odometer |
 | **price** | NUMERIC(10,2) | NOT NULL, Check >= 0.00 | Sales price tag |
 | **description** | TEXT | NULL | Vehicle breakdown features list |
-| **availability** | BOOLEAN | NOT NULL, DEFAULT TRUE | TRUE if active, FALSE if sold/hold |
+| **availability** | BOOLEAN | NOT NULL, DEFAULT TRUE | TRUE if active, FALSE if unavailable/hold |
 
 ---
 

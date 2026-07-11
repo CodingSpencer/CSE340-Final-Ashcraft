@@ -8,10 +8,15 @@ const listVehicles = async (categoryId = null) => {
         vehicles = vehicles.filter((v) => v.category_id === Number(categoryId));
     }
 
-    // Attach category name to each vehicle
+    // Attach category name and primary image to each vehicle
     return vehicles.map((v) => {
         const category = db.categories.find((c) => c.id === v.category_id);
-        return { ...v, category_name: category ? category.category_name : null };
+        const images = db.vehicleImages.filter((img) => img.vehicle_id === v.id);
+        return {
+            ...v,
+            category_name: category ? category.category_name : null,
+            primary_image: images.length > 0 ? images[0].image_path : null
+        };
     });
 };
 

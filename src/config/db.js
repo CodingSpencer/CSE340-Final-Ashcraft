@@ -93,6 +93,34 @@ const initializeDemoData = async () => {
         });
     });
 
+    // --- Seed Vehicle Images ---
+    const vehicleImageData = [
+        { vehicle_id: 1, image_path: 'https://picsum.photos/seed/toyota-corolla-2022/600/400' },
+        { vehicle_id: 1, image_path: 'https://picsum.photos/seed/toyota-corolla-2022-2/600/400' },
+        { vehicle_id: 2, image_path: 'https://picsum.photos/seed/chevy-silverado-2018/600/400' },
+        { vehicle_id: 2, image_path: 'https://picsum.photos/seed/chevy-silverado-2018-2/600/400' },
+        { vehicle_id: 3, image_path: 'https://picsum.photos/seed/honda-crv-2021/600/400' },
+        { vehicle_id: 3, image_path: 'https://picsum.photos/seed/honda-crv-2021-2/600/400' },
+        { vehicle_id: 4, image_path: 'https://picsum.photos/seed/chrysler-pacifica-2019/600/400' },
+        { vehicle_id: 4, image_path: 'https://picsum.photos/seed/chrysler-pacifica-2019-2/600/400' },
+        { vehicle_id: 5, image_path: 'https://picsum.photos/seed/ford-mustang-2023/600/400' },
+        { vehicle_id: 5, image_path: 'https://picsum.photos/seed/ford-mustang-2023-2/600/400' },
+        { vehicle_id: 6, image_path: 'https://picsum.photos/seed/jeep-wrangler-2017/600/400' },
+        { vehicle_id: 6, image_path: 'https://picsum.photos/seed/jeep-wrangler-2017-2/600/400' },
+        { vehicle_id: 7, image_path: 'https://picsum.photos/seed/toyota-tacoma-2020/600/400' },
+        { vehicle_id: 7, image_path: 'https://picsum.photos/seed/toyota-tacoma-2020-2/600/400' },
+        { vehicle_id: 8, image_path: 'https://picsum.photos/seed/hyundai-elantra-2016/600/400' },
+        { vehicle_id: 8, image_path: 'https://picsum.photos/seed/hyundai-elantra-2016-2/600/400' }
+    ];
+
+    vehicleImageData.forEach((img) => {
+        state.vehicleImages.push({
+            id: state.nextImageId++,
+            vehicle_id: img.vehicle_id,
+            image_path: img.image_path
+        });
+    });
+
     state.initialized = true;
 };
 
