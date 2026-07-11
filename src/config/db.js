@@ -93,24 +93,16 @@ const initializeDemoData = async () => {
         });
     });
 
-    // --- Seed Vehicle Images ---
+    // Seed Vehicle Images 
     const vehicleImageData = [
-        { vehicle_id: 1, image_path: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/2020_Toyota_Corolla_Ascent_Sport_hybrid_hatchback_%282019-07-06%29_01.jpg/800px-2020_Toyota_Corolla_Ascent_Sport_hybrid_hatchback_%282019-07-06%29_01.jpg' },
-        { vehicle_id: 1, image_path: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/2020_Toyota_Corolla_Ascent_Sport_hybrid_hatchback_%282019-07-06%29_02.jpg/800px-2020_Toyota_Corolla_Ascent_Sport_hybrid_hatchback_%282019-07-06%29_02.jpg' },
-        { vehicle_id: 2, image_path: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/2016_Chevrolet_Silverado_1500_LT_Z71_Crew_Cab.jpg/800px-2016_Chevrolet_Silverado_1500_LT_Z71_Crew_Cab.jpg' },
-        { vehicle_id: 2, image_path: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/2016_Chevrolet_Silverado_1500_LT_Z71_Crew_Cab_front.jpg/800px-2016_Chevrolet_Silverado_1500_LT_Z71_Crew_Cab_front.jpg' },
-        { vehicle_id: 3, image_path: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/2020_Honda_CR-V_EX_AWD_front_view_in_Lunar_Silver_Metallic.jpg/800px-2020_Honda_CR-V_EX_AWD_front_view_in_Lunar_Silver_Metallic.jpg' },
-        { vehicle_id: 3, image_path: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/2020_Honda_CR-V_EX_AWD_rear_view_in_Lunar_Silver_Metallic.jpg/800px-2020_Honda_CR-V_EX_AWD_rear_view_in_Lunar_Silver_Metallic.jpg' },
-        { vehicle_id: 4, image_path: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/2017_Chrysler_Pacifica_Limited_front_right.jpg/800px-2017_Chrysler_Pacifica_Limited_front_right.jpg' },
-        { vehicle_id: 4, image_path: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/2017_Chrysler_Pacifica_Limited_rear_left.jpg/800px-2017_Chrysler_Pacifica_Limited_rear_left.jpg' },
-        { vehicle_id: 5, image_path: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/2015_Ford_Mustang_GT_5.0_Fastback_front.jpg/800px-2015_Ford_Mustang_GT_5.0_Fastback_front.jpg' },
-        { vehicle_id: 5, image_path: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/2015_Ford_Mustang_GT_5.0_Fastback_rear.jpg/800px-2015_Ford_Mustang_GT_5.0_Fastback_rear.jpg' },
-        { vehicle_id: 6, image_path: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/2018_Jeep_Wrangler_Unlimited_Sahara_front.jpg/800px-2018_Jeep_Wrangler_Unlimited_Sahara_front.jpg' },
-        { vehicle_id: 6, image_path: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/2018_Jeep_Wrangler_Unlimited_Sahara_rear.jpg/800px-2018_Jeep_Wrangler_Unlimited_Sahara_rear.jpg' },
-        { vehicle_id: 7, image_path: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/2016_Toyota_Tacoma_TRD_Off_Road_Double_Cab_front_1.jpg/800px-2016_Toyota_Tacoma_TRD_Off_Road_Double_Cab_front_1.jpg' },
-        { vehicle_id: 7, image_path: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/2016_Toyota_Tacoma_TRD_Off_Road_Double_Cab_rear_1.jpg/800px-2016_Toyota_Tacoma_TRD_Off_Road_Double_Cab_rear_1.jpg' },
-        { vehicle_id: 8, image_path: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/2017_Hyundai_Elantra_SE_front.jpg/800px-2017_Hyundai_Elantra_SE_Senior_Editor_review.jpg' },
-        { vehicle_id: 8, image_path: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/2017_Hyundai_Elantra_SE_rear.jpg/800px-2017_Hyundai_Elantra_SE_rear.jpg' }
+        { vehicle_id: 1, image_path: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=500' }, // Corolla
+        { vehicle_id: 2, image_path: 'https://images.unsplash.com/photo-1598463282245-0d306b86411d?w=500' }, // Silverado
+        { vehicle_id: 3, image_path: 'https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=500' }, // CR-V
+        { vehicle_id: 4, image_path: 'https://images.unsplash.com/photo-1542362567-b07e54358753?w=500' }, // Minivan
+        { vehicle_id: 5, image_path: 'https://images.unsplash.com/photo-1584345604476-8aa5e58b943fad?w=500' }, // Mustang
+        { vehicle_id: 6, image_path: 'https://images.unsplash.com/photo-1502877338535-7de6e104561e?w=500' }, // Wrangler
+        { vehicle_id: 7, image_path: 'https://images.unsplash.com/photo-1551830820-330a41b9968d?w=500' }, // Tacoma
+        { vehicle_id: 8, image_path: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=500' }  // Elantra
     ];
 
     vehicleImageData.forEach((img) => {
