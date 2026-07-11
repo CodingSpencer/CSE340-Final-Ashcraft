@@ -15,7 +15,7 @@ const listVehicles = async (categoryId = null) => {
         return {
             ...v,
             category_name: category ? category.category_name : null,
-            primary_image: images.length > 0 ? images[0].image_path : null
+            primary_image: v.image_path || (images.length > 0 ? images[0].image_path : null)
         };
     });
 };
@@ -27,6 +27,11 @@ const findVehicleById = async (id) => {
 
     const category = db.categories.find((c) => c.id === vehicle.category_id);
     const images = db.vehicleImages.filter((img) => img.vehicle_id === Number(id));
+
+    // If vehicle has its own image_path, use it as the primary image
+    if (vehicle.image_path && !images.find((img) => img.image_path === vehicle.image_path)) {
+        images.unshift({ id: null, vehicle_id: vehicle.id, image_path: vehicle.image_path });
+    }
 
     return {
         ...vehicle,
