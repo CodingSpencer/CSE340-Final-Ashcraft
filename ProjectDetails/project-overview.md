@@ -127,6 +127,21 @@ The project is intended for coursework and for demonstrating a full-stack web ap
 
 ---
 
-## 9. Additional Notes
+## 9. Test User Accounts
+
+The application seeds demo data on startup, including the following user accounts for testing authentication and role-based access:
+
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | `admin@example.com` | `password123` |
+| Employee | `employee@example.com` | `password123` |
+| Customer | `customer@example.com` | `password123` |
+| Test User | `test@example.com` | `testpassword123` |
+
+All accounts are created with bcrypt-hashed passwords and are available immediately when the server starts. Use these credentials to log in at `/login` or `/account/login`.
+
+---
+
+## 10. Additional Notes
 
 This repository is a strong starting point for a full-featured service-business application. As development continues, the project should evolve from its current scaffold into a complete experience with working routes, real data handling, and polished user interfaces.

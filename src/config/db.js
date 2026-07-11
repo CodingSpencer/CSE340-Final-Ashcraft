@@ -52,6 +52,17 @@ const initializeDemoData = async () => {
         createdAt: new Date().toISOString()
     });
 
+    // --- Test User Account ---
+    const testHashedPassword = await bcrypt.hash('testpassword123', 10);
+    state.users.push({
+        id: state.nextUserId++,
+        name: 'Test User',
+        email: 'test@example.com',
+        password: testHashedPassword,
+        roleName: 'customer',
+        createdAt: new Date().toISOString()
+    });
+
     // --- Seed Categories ---
     const categoryData = [
         { category_name: 'Cars' },
