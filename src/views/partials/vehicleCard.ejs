@@ -1,0 +1,10 @@
+<div class="vehicle-card">
+    <h3><%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %></h3>
+    <p class="vehicle-category"><%= vehicle.category_name %></p>
+    <p class="vehicle-price">$<%= Number(vehicle.price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></p>
+    <p class="vehicle-mileage"><%= Number(vehicle.mileage).toLocaleString() %> miles</p>
+    <p class="vehicle-status <%= vehicle.availability ? 'available' : 'sold' %>">
+        <%= vehicle.availability ? 'Available' : 'Sold' %>
+    </p>
+    <a href="/inventory/<%= vehicle.id %>" class="btn">View Details</a>
+</div>

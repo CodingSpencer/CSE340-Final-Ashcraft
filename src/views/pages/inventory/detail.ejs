@@ -1,0 +1,23 @@
+<h1><%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %></h1>
+
+<%- include('../../partials/flash-messages') %>
+
+<div class="vehicle-detail">
+    <div class="vehicle-info">
+        <p><strong>Category:</strong> <%= vehicle.category_name %></p>
+        <p><strong>Price:</strong> $<%= Number(vehicle.price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></p>
+        <p><strong>Mileage:</strong> <%= Number(vehicle.mileage).toLocaleString() %> miles</p>
+        <p><strong>Status:</strong> <span class="<%= vehicle.availability ? 'available' : 'sold' %>"><%= vehicle.availability ? 'Available' : 'Sold' %></span></p>
+        
+        <% if (vehicle.description) { %>
+            <div class="vehicle-description">
+                <h2>Description</h2>
+                <p><%= vehicle.description %></p>
+            </div>
+        <% } %>
+    </div>
+
+    <div class="vehicle-actions">
+        <a href="/inventory" class="btn">&larr; Back to Inventory</a>
+    </div>
+</div>

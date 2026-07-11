@@ -85,9 +85,9 @@ const register = async (req, res) => {
 };
 
 const logout = (req, res) => {
+    req.flash('success', 'You have been logged out.');
     req.session.destroy(() => {
         res.clearCookie('connect.sid');
-        req.flash('success', 'You have been logged out.');
         res.redirect('/');
     });
 };

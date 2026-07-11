@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import expressLayouts from 'express-ejs-layouts'; 
 
 import accountRoutes from './src/routes/account.routes.js';
+import inventoryRoutes from './src/routes/inventory.routes.js';
 import { authContextMiddleware, flashMiddleware, sessionMiddleware } from './src/config/session.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -35,6 +36,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/', accountRoutes);
+app.use('/inventory', inventoryRoutes);
 
 if (process.env.NODE_ENV !== 'test') {
     app.listen(3000, () => {

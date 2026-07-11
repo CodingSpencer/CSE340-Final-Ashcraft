@@ -38,4 +38,14 @@ const requireRole = (roleName) => {
     };
 };
 
-export { requireLogin, requireRole };
+/**
+ * Middleware to require employee role.
+ */
+const checkEmployee = requireRole('employee');
+
+/**
+ * Middleware to require admin (owner) role.
+ */
+const checkAdmin = requireRole('admin');
+
+export { requireLogin, requireRole, checkEmployee, checkAdmin };

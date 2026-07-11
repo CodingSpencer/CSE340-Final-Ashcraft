@@ -21,7 +21,7 @@ const findUserById = async (id) => {
 const createUser = async (name, email, password, roleName = 'customer') => {
     const db = await getDb();
     const user = {
-        id: db.nextId++,
+        id: db.nextUserId++,
         name,
         email,
         password,

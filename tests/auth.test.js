@@ -28,6 +28,7 @@ test('registration and login create a session and reach the dashboard', async ()
   try {
     const registerResponse = await fetch(`http://127.0.0.1:${server.address().port}/register`, {
       method: 'POST',
+      redirect: 'manual',
       headers: {
         'content-type': 'application/x-www-form-urlencoded'
       },
@@ -38,6 +39,7 @@ test('registration and login create a session and reach the dashboard', async ()
 
     const loginResponse = await fetch(`http://127.0.0.1:${server.address().port}/login`, {
       method: 'POST',
+      redirect: 'manual',
       headers: {
         'content-type': 'application/x-www-form-urlencoded'
       },
@@ -50,6 +52,7 @@ test('registration and login create a session and reach the dashboard', async ()
     assert.ok(setCookie);
 
     const dashboardResponse = await fetch(`http://127.0.0.1:${server.address().port}/dashboard`, {
+      redirect: 'manual',
       headers: {
         cookie: setCookie
       }

@@ -1,0 +1,30 @@
+<h1>Our Inventory</h1>
+
+<%- include('../../partials/flash-messages') %>
+
+<div class="inventory-filters">
+    <form method="GET" action="/inventory">
+        <label for="category">Filter by category:</label>
+        <select name="category" id="category" onchange="this.form.submit()">
+            <option value="">All Categories</option>
+            <% categories.forEach((cat) => { %>
+                <option value="<%= cat.id %>" <%= String(selectedCategory) === String(cat.id) ? 'selected' : '' %>>
+                    <%= cat.category_name %>
+                </option>
+            <% }) %>
+        </select>
+        <% if (selectedCategory) { %>
+            <a href="/inventory" class="btn-clear">Clear Filter</a>
+        <% } %>
+    </form>
+</div>
+
+<div class="vehicle-grid">
+    <% if (vehicles && vehicles.length > 0) { %>
+        <% vehicles.forEach((vehicle) => { %>
+            <%- include('../../partials/vehicleCard', { vehicle }) %>
+        <% }) %>
+    <% } else { %>
+        <p class="no-results">No vehicles found matching your criteria.</p>
+    <% } %>
+</div>
