@@ -1,8 +1,9 @@
 <% if (flashMessages && flashMessages.length) { %>
 <div class="flash-messages">
     <% flashMessages.forEach((flash) => { %>
-        <div class="flash-message flash-<%= flash.type %> flash-auto-fade" data-auto-fade="true">
-            <%= flash.message %>
+        <div class="flash-message flash-<%= flash.type %>">
+            <span class="flash-message-text"><%= flash.message %></span>
+            <button class="flash-dismiss" onclick="this.parentElement.remove()">&times;</button>
         </div>
     <% }) %>
 </div>
