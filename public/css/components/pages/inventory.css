@@ -40,7 +40,36 @@ h1 {
     color: var(--text-muted);
 }
 
-/* Vehicle Detail Page */
+/* Vehicle Detail Card */
+.vehicle-detail-card {
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+.vehicle-detail-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-lg) var(--space-xl);
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-secondary, #f8f9fa);
+}
+
+.vehicle-detail-card-header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--title-color);
+}
+
+.vehicle-detail-card-body {
+    padding: var(--space-xl);
+}
+
 .vehicle-detail {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -52,6 +81,12 @@ h1 {
     .vehicle-detail {
         grid-template-columns: 1fr;
     }
+}
+
+.vehicle-detail-card-footer {
+    padding: var(--space-md) var(--space-xl);
+    border-top: 1px solid var(--border-color);
+    background-color: var(--bg-secondary, #f8f9fa);
 }
 
 /* Image Gallery */
@@ -137,7 +172,341 @@ h1 {
     line-height: var(--line-height-body);
 }
 
-.vehicle-actions {
-    grid-column: 1 / -1;
+/* Rental Section on Detail Page */
+.rental-section {
     margin-top: var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--border-color);
+}
+
+.rental-section h2 {
+    margin: 0 0 var(--space-sm) 0;
+    font-size: 1.1rem;
+    color: var(--title-color);
+}
+
+.rental-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.rental-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.rental-form .form-group label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--title-color);
+}
+
+.rental-form .form-group input[type="date"] {
+    padding: var(--space-xs) var(--space-sm);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-body);
+    background-color: var(--surface-color);
+    color: var(--text-color);
+}
+
+.rental-form .btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    padding: var(--space-sm) var(--space-md);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: var(--font-size-body);
+    font-weight: 600;
+    transition: background-color var(--transition-base);
+}
+
+.rental-form .btn-primary:hover {
+    background-color: var(--primary-hover, #0056b3);
+}
+
+.unavailable-message {
+    color: var(--error-color, #dc3545);
+    font-weight: 600;
+    padding: var(--space-sm);
+    background-color: var(--error-bg, #fdecea);
+    border-radius: var(--radius-md);
+    text-align: center;
+}
+
+/* Rental Cards (Customer & Admin) */
+.rental-cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.rental-card {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.rental-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.rental-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-md) var(--space-lg);
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-secondary, #f8f9fa);
+}
+
+.rental-card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--title-color);
+}
+
+.rental-card-body {
+    padding: var(--space-md) var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.rental-card-body p {
+    margin: 0;
+    font-size: var(--font-size-body);
+    color: var(--text-color);
+}
+
+.rental-card-actions {
+    padding: var(--space-sm) var(--space-lg);
+    border-top: 1px solid var(--border-color);
+    background-color: var(--bg-secondary, #f8f9fa);
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-pending {
+    color: #856404;
+    background-color: #fff3cd;
+}
+
+.status-active {
+    color: #004085;
+    background-color: #cce5ff;
+}
+
+.status-completed {
+    color: #155724;
+    background-color: #d4edda;
+}
+
+.status-cancelled {
+    color: #721c24;
+    background-color: #f8d7da;
+}
+
+/* Status Form */
+.status-form select {
+    padding: var(--space-xs) var(--space-sm);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-body);
+    background-color: var(--surface-color);
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+.btn-danger {
+    background-color: var(--error-color, #dc3545);
+    color: white;
+    padding: var(--space-xs) var(--space-md);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: var(--font-size-body);
+    font-weight: 600;
+    transition: background-color var(--transition-base);
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.dashboard-link {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--border-color);
+}
+
+.dashboard-link a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.dashboard-link a:hover {
+    text-decoration: underline;
+}
+
+/* Review Section */
+.reviews-section {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--border-color);
+}
+
+.reviews-section h2 {
+    margin: 0 0 var(--space-md) 0;
+    font-size: 1.25rem;
+    color: var(--title-color);
+}
+
+.reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.no-reviews {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* Review Card */
+.review-card {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.review-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-sm);
+}
+
+.review-author {
+    font-weight: 600;
+    color: var(--title-color);
+}
+
+.review-rating {
+    display: flex;
+    gap: 2px;
+}
+
+.star {
+    color: #ccc;
+    font-size: 1rem;
+}
+
+.star.filled {
+    color: #ffc107;
+}
+
+.review-card-body p {
+    margin: 0;
+    color: var(--text-color);
+    line-height: var(--line-height-body);
+}
+
+.review-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--space-sm);
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--border-color);
+}
+
+.review-date {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Review Actions */
+.review-actions {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+/* Add Review Form */
+.add-review-section {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--border-color);
+}
+
+.add-review-section h3 {
+    margin: 0 0 var(--space-sm) 0;
+    font-size: 1rem;
+    color: var(--title-color);
+}
+
+.review-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.review-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.review-form select,
+.review-form textarea {
+    padding: var(--space-xs) var(--space-sm);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-body);
+    background-color: var(--surface-color);
+    color: var(--text-color);
+}
+
+.review-form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.btn-sm {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: 0.85rem;
+}
+
+/* My Reviews Page */
+.review-vehicle {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.review-vehicle a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.review-vehicle a:hover {
+    text-decoration: underline;
 }
