@@ -48,4 +48,29 @@ const checkEmployee = requireRole('employee');
  */
 const checkAdmin = requireRole('admin');
 
-export { requireLogin, requireRole, checkEmployee, checkAdmin };
+/**
+ * Middleware to require customer role.
+ */
+const checkCustomer = requireRole('customer');
+
+/**
+ * Middleware to require admin or employee role.
+ * Used for routes that both roles can access.
+ */
+const checkAdminOrEmployee = (req, res, next) => {
+    if (!req.session || !req.session.user) {
+        req.flash('error', 'You must be logged in to access this page.');
+        return res.redirect('/login');
+    }
+
+    if (req.session.user.roleName !== 'admin' && req.session.user.roleName !== 'employee') {
+        req.flash('error', 'You do not have permission to access this page.');
+        return res.redirect('/dashboard');
+    }
+
+    res.locals.isLoggedIn = true;
+    res.locals.user = req.session.user;
+    return next();
+};
+
+export { requireLogin, requireRole, checkEmployee, checkAdmin, checkCustomer, checkAdminOrEmployee };

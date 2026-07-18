@@ -2,7 +2,7 @@ import session from 'express-session';
 
 const sessionConfig = {
     secret: process.env.SESSION_SECRET || 'cse340-dev-secret',
-    resave: false,
+    resave: true,
     saveUninitialized: false,
     cookie: {
         httpOnly: true,
@@ -28,8 +28,8 @@ const flashMiddleware = (req, res, next) => {
         req.session.flashMessages = [];
 
         const mergedLocals = typeof locals === 'function'
-            ? { flashMessages }
-            : { ...locals, flashMessages };
+            ? { ...res.locals, flashMessages }
+            : { ...res.locals, ...locals, flashMessages };
 
         return originalRender(view, mergedLocals, callback);
     };

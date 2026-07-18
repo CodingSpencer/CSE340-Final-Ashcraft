@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+
 import {
     createUser,
     findUserByEmail,
@@ -92,4 +93,4 @@ const logout = (req, res) => {
     });
 };
 
-export { login, logout, register, showLoginForm, showRegisterForm };
+export default { login, logout, register, showLoginForm, showRegisterForm };

@@ -1,5 +1,7 @@
 import { listVehicles, findVehicleById } from '../models/vehicle.model.js';
 import { listCategories } from '../models/category.model.js';
+import { findBlockedDates } from '../models/rental.model.js';
+import { findReviewsByVehicle } from '../models/review.model.js';
 
 const showInventory = async (req, res) => {
     try {
@@ -29,9 +31,17 @@ const showVehicleDetail = async (req, res) => {
             return res.redirect('/inventory');
         }
 
+        // Get blocked date ranges for this vehicle
+        const blockedDates = await findBlockedDates(req.params.id);
+
+        // Get reviews for this vehicle
+        const reviews = await findReviewsByVehicle(req.params.id);
+
         res.render('pages/inventory/detail', {
             title: `${vehicle.year} ${vehicle.make} ${vehicle.model}`,
-            vehicle
+            vehicle,
+            blockedDates: JSON.stringify(blockedDates),
+            reviews
         });
     } catch (error) {
         console.error('Error loading vehicle detail:', error);

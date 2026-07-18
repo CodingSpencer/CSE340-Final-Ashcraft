@@ -4,6 +4,22 @@
 
 <p>Welcome, <%= user.name %>!</p>
 
+<div class="dashboard-links">
+    <h2>Menu</h2>
+    <ul>
+        <li><a href="/inventory">Browse Inventory</a></li>
+
+        <% if (user.roleName === 'customer') { %>
+            <li><a href="/my-rentals">My Rentals</a></li>
+            <li><a href="/my-reviews">My Reviews</a></li>
+        <% } %>
+
+        <% if (user.roleName === 'employee' || user.roleName === 'admin') { %>
+            <li><a href="/admin/rentals">Manage Rentals</a></li>
+        <% } %>
+    </ul>
+</div>
+
 <form method="POST" action="/logout">
     <button type="submit">Log out</button>
 </form>
