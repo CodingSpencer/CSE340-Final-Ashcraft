@@ -2,9 +2,13 @@
 
 <%- include('../../partials/flash-messages') %>
 
-<div class="dashboard-role">
-    <strong>Role:</strong> <%= user.roleName %>
-</div>
+<% if (user.roleName && user.roleName.toLowerCase() === "customer") { %>
+    <h2>Customer Menu</h2>
+<% } else if (user.roleName && user.roleName.toLowerCase() === "employee") { %>
+    <h2>Groomer Menu</h2>
+<% } else if (user.roleName && user.roleName.toLowerCase() === "owner") { %>
+    <h2>Admin Menu</h2>
+<% } %>
 
 <div class="dashboard-links">
     <h2>Menu</h2>
