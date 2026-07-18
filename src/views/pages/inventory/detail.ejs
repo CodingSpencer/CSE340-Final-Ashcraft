@@ -1,105 +1,126 @@
 <%- include('../../partials/flash-messages') %>
 
-<div class="vehicle-detail-card">
-    <div class="vehicle-detail-card-header">
-        <h1><%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %></h1>
-        <span class="status-badge status-<%= vehicle.availability ? 'active' : 'cancelled' %>"><%= vehicle.availability ? 'Available' : 'Unavailable' %></span>
-    </div>
+<div class="vehicle-detail-container">
+    <!-- Row 1: Vehicle Details Card -->
+    <div class="vehicle-detail-card">
+        <div class="vehicle-detail-card-header">
+            <h1><%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %></h1>
+            <span class="status-badge status-<%= vehicle.availability ? 'active' : 'cancelled' %>"><%= vehicle.availability ? 'Available' : 'Unavailable' %></span>
+        </div>
 
-    <div class="vehicle-detail-card-body">
-        <div class="vehicle-detail">
-            <% if (vehicle.images && vehicle.images.length > 0) { %>
-                <div class="vehicle-gallery">
-                    <div class="vehicle-gallery-main">
-                        <img src="<%= vehicle.images[0].image_path %>" alt="<%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %>" id="mainImage">
-                    </div>
-                    <% if (vehicle.images.length > 1) { %>
-                        <div class="vehicle-gallery-thumbnails">
-                            <% vehicle.images.forEach((img) => { %>
-                                <button class="gallery-thumb" onclick="document.getElementById('mainImage').src = '<%= img.image_path %>'">
-                                    <img src="<%= img.image_path %>" alt="<%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %>" loading="lazy">
-                                </button>
-                            <% }) %>
+        <div class="vehicle-detail-card-body">
+            <div class="vehicle-detail">
+                <!-- Left: Image -->
+                <div class="vehicle-left">
+                    <% if (vehicle.images && vehicle.images.length > 0) { %>
+                        <div class="vehicle-gallery">
+                            <div class="vehicle-gallery-main">
+                                <img src="<%= vehicle.images[0].image_path %>" alt="<%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %>" id="mainImage">
+                            </div>
+                            <% if (vehicle.images.length > 1) { %>
+                                <div class="vehicle-gallery-thumbnails">
+                                    <% vehicle.images.forEach((img) => { %>
+                                        <button class="gallery-thumb" onclick="document.getElementById('mainImage').src = '<%= img.image_path %>'">
+                                            <img src="<%= img.image_path %>" alt="<%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %>" loading="lazy">
+                                        </button>
+                                    <% }) %>
+                                </div>
+                            <% } %>
                         </div>
                     <% } %>
                 </div>
-            <% } %>
 
-            <div class="vehicle-info">
-                <p><strong>Category:</strong> <%= vehicle.category_name %></p>
-                <p><strong>Price:</strong> $<%= Number(vehicle.price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></p>
-                <p><strong>Mileage:</strong> <%= Number(vehicle.mileage).toLocaleString() %> miles</p>
-                
-                <% if (vehicle.description) { %>
-                    <div class="vehicle-description">
-                        <h2>Description</h2>
-                        <p><%= vehicle.description %></p>
+                <!-- Right: All Text (Category, Price, Mileage, Description) -->
+                <div class="vehicle-right">
+                    <div class="vehicle-info">
+                        <p><strong>Category:</strong> <%= vehicle.category_name %></p>
+                        <p><strong>Price:</strong> $<%= Number(vehicle.price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></p>
+                        <p><strong>Mileage:</strong> <%= Number(vehicle.mileage).toLocaleString() %> miles</p>
                     </div>
+                    <% if (vehicle.description) { %>
+                        <div class="vehicle-description">
+                            <h2>Description</h2>
+                            <p><%= vehicle.description %></p>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <div class="vehicle-detail-card-footer">
+            <a href="/inventory" class="btn">&larr; Back to Inventory</a>
+        </div>
+    </div>
+
+    <!-- Row 2: Reviews and Rental Cards -->
+    <div class="vehicle-detail-row">
+        <!-- Reviews Card -->
+        <div class="vehicle-detail-card">
+            <div class="vehicle-detail-card-header">
+                <h2>Customer Reviews</h2>
+            </div>
+
+            <div class="vehicle-detail-card-body">
+                <% if (reviews && reviews.length > 0) { %>
+                    <div class="reviews-list">
+                        <% reviews.forEach((review) => { %>
+                            <%- include('../../partials/reviewCard', { review }) %>
+                        <% }) %>
+                    </div>
+                <% } else { %>
+                    <p class="no-reviews">No reviews yet. Be the first to review this vehicle!</p>
                 <% } %>
 
-                 <!-- Reviews Section -->
-                 <div class="reviews-section">
-                     <h2>Customer Reviews</h2>
-                     <% if (reviews && reviews.length > 0) { %>
-                         <div class="reviews-list">
-                             <% reviews.forEach((review) => { %>
-                                 <%- include('../../partials/reviewCard', { review }) %>
-                             <% }) %>
-                         </div>
-                     <% } else { %>
-                         <p class="no-reviews">No reviews yet. Be the first to review this vehicle!</p>
-                     <% } %>
+                <% if (isLoggedIn) { %>
+                    <div class="add-review-section">
+                        <h3>Add Your Review</h3>
+                        <form method="POST" action="/inventory/<%= vehicle.id %>/review" class="review-form">
+                            <div class="form-group">
+                                <label for="rating">Rating:</label>
+                                <select id="rating" name="rating" required>
+                                    <option value="">Select a rating</option>
+                                    <option value="5">5 Stars</option>
+                                    <option value="4">4 Stars</option>
+                                    <option value="3">3 Stars</option>
+                                    <option value="2">2 Stars</option>
+                                    <option value="1">1 Star</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="review_text">Your Review:</label>
+                                <textarea id="review_text" name="review_text" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Review</button>
+                        </form>
+                    </div>
+                <% } %>
+            </div>
+        </div>
 
-                     <% if (isLoggedIn) { %>
-                         <div class="add-review-section">
-                             <h3>Add Your Review</h3>
-                             <form method="POST" action="/inventory/<%= vehicle.id %>/review" class="review-form">
-                                 <div class="form-group">
-                                     <label for="rating">Rating:</label>
-                                     <select id="rating" name="rating" required>
-                                         <option value="">Select a rating</option>
-                                         <option value="5">5 Stars</option>
-                                         <option value="4">4 Stars</option>
-                                         <option value="3">3 Stars</option>
-                                         <option value="2">2 Stars</option>
-                                         <option value="1">1 Star</option>
-                                     </select>
-                                 </div>
-                                 <div class="form-group">
-                                     <label for="review_text">Your Review:</label>
-                                     <textarea id="review_text" name="review_text" rows="3" required></textarea>
-                                 </div>
-                                 <button type="submit" class="btn btn-primary">Submit Review</button>
-                             </form>
-                         </div>
-                     <% } %>
-                 </div>
+        <!-- Rental Card -->
+        <% if (isLoggedIn) { %>
+            <div class="vehicle-detail-card">
+                <div class="vehicle-detail-card-header">
+                    <h2>Rent This Vehicle</h2>
+                </div>
 
-                 <!-- Rental Section -->
-                 <% if (isLoggedIn) { %>
-                     <div class="rental-section">
-                         <h2>Rent This Vehicle</h2>
-                         <form method="POST" action="/inventory/<%= vehicle.id %>/rent" class="rental-form">
-                             <div class="form-group">
-                                 <label for="start_date">Start Date:</label>
-                                 <input type="date" id="start_date" name="start_date" required
-                                        data-blocked='<%= typeof blockedDates !== 'undefined' ? blockedDates : '[]' %>'>
-                             </div>
-                             <div class="form-group">
-                                 <label for="end_date">End Date:</label>
-                                 <input type="date" id="end_date" name="end_date" required
-                                        data-blocked='<%= typeof blockedDates !== 'undefined' ? blockedDates : '[]' %>'>
-                             </div>
-                             <button type="submit" class="btn btn-primary">Submit Rental Request</button>
-                         </form>
-                     </div>
-                 <% } %>
-             </div>
-         </div>
-     </div>
-
-    <div class="vehicle-detail-card-footer">
-        <a href="/inventory" class="btn">&larr; Back to Inventory</a>
+                <div class="vehicle-detail-card-body">
+                    <form method="POST" action="/inventory/<%= vehicle.id %>/rent" class="rental-form">
+                        <div class="form-group">
+                            <label for="start_date">Start Date:</label>
+                            <input type="date" id="start_date" name="start_date" required
+                                   data-blocked='<%= typeof blockedDates !== 'undefined' ? blockedDates : '[]' %>'>
+                        </div>
+                        <div class="form-group">
+                            <label for="end_date">End Date:</label>
+                            <input type="date" id="end_date" name="end_date" required
+                                   data-blocked='<%= typeof blockedDates !== 'undefined' ? blockedDates : '[]' %>'>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Rental Request</button>
+                    </form>
+                </div>
+            </div>
+        <% } %>
     </div>
 </div>
 
