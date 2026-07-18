@@ -74,10 +74,18 @@ const register = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        await createUser(name, email, hashedPassword);
+        const newUser = await createUser(name, email, hashedPassword);
 
-        req.flash('success', 'Registration successful. Please log in.');
-        return res.redirect('/login');
+        // Auto-login the user after registration
+        req.session.user = {
+            id: newUser.id,
+            name: newUser.name,
+            email: newUser.email,
+            roleName: newUser.roleName || 'customer'
+        };
+
+        req.flash('success', 'Registration successful. Welcome to Cougar Car Rental!');
+        return res.redirect('/dashboard');
     } catch (error) {
         console.error(error);
         req.flash('error', 'Unable to create account right now.');

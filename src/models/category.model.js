@@ -4,11 +4,19 @@ const listCategories = async () => {
     const db = await getDb();
     
     if (useMemoryStorage) {
-        return db.categories;
+        return db.categories.map((cat) => ({
+            id: cat.id,
+            category_id: cat.id,
+            category_name: cat.category_name
+        }));
     }
     
     const result = await pool.query('SELECT * FROM categories ORDER BY category_name');
-    return result.rows;
+    return result.rows.map((row) => ({
+        id: row.category_id,
+        category_id: row.category_id,
+        category_name: row.category_name
+    }));
 };
 
 const findCategoryById = async (id) => {
@@ -19,7 +27,7 @@ const findCategoryById = async (id) => {
     }
     
     const result = await pool.query(
-        'SELECT * FROM categories WHERE id = $1',
+        'SELECT * FROM categories WHERE category_id = $1',
         [id]
     );
     return result.rows[0] || null;
@@ -55,7 +63,7 @@ const updateCategory = async (id, categoryName) => {
     }
     
     const result = await pool.query(
-        'UPDATE categories SET category_name = $1 WHERE id = $2 RETURNING *',
+        'UPDATE categories SET category_name = $1 WHERE category_id = $2 RETURNING *',
         [categoryName, id]
     );
     return result.rows[0] || null;
@@ -72,7 +80,7 @@ const deleteCategory = async (id) => {
     }
     
     const result = await pool.query(
-        'DELETE FROM categories WHERE id = $1',
+        'DELETE FROM categories WHERE category_id = $1',
         [id]
     );
     return result.rowCount > 0;
