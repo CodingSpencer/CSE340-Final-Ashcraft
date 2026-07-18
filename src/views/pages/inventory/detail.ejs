@@ -1,40 +1,171 @@
-<h1><%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %></h1>
-
 <%- include('../../partials/flash-messages') %>
 
-<div class="vehicle-detail">
-    <% if (vehicle.images && vehicle.images.length > 0) { %>
-        <div class="vehicle-gallery">
-            <div class="vehicle-gallery-main">
-                <img src="<%= vehicle.images[0].image_path %>" alt="<%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %>" id="mainImage">
-            </div>
-            <% if (vehicle.images.length > 1) { %>
-                <div class="vehicle-gallery-thumbnails">
-                    <% vehicle.images.forEach((img) => { %>
-                        <button class="gallery-thumb" onclick="document.getElementById('mainImage').src = '<%= img.image_path %>'">
-                            <img src="<%= img.image_path %>" alt="<%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %>" loading="lazy">
-                        </button>
-                    <% }) %>
-                </div>
-            <% } %>
-        </div>
-    <% } %>
-
-    <div class="vehicle-info">
-        <p><strong>Category:</strong> <%= vehicle.category_name %></p>
-        <p><strong>Price:</strong> $<%= Number(vehicle.price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></p>
-        <p><strong>Mileage:</strong> <%= Number(vehicle.mileage).toLocaleString() %> miles</p>
-        <p><strong>Status:</strong> <span class="<%= vehicle.availability ? 'available' : 'unavailable' %>"><%= vehicle.availability ? 'Available' : 'Unavailable' %></span></p>
-        
-        <% if (vehicle.description) { %>
-            <div class="vehicle-description">
-                <h2>Description</h2>
-                <p><%= vehicle.description %></p>
-            </div>
-        <% } %>
+<div class="vehicle-detail-card">
+    <div class="vehicle-detail-card-header">
+        <h1><%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %></h1>
+        <span class="status-badge status-<%= vehicle.availability ? 'active' : 'cancelled' %>"><%= vehicle.availability ? 'Available' : 'Unavailable' %></span>
     </div>
 
-    <div class="vehicle-actions">
+    <div class="vehicle-detail-card-body">
+        <div class="vehicle-detail">
+            <% if (vehicle.images && vehicle.images.length > 0) { %>
+                <div class="vehicle-gallery">
+                    <div class="vehicle-gallery-main">
+                        <img src="<%= vehicle.images[0].image_path %>" alt="<%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %>" id="mainImage">
+                    </div>
+                    <% if (vehicle.images.length > 1) { %>
+                        <div class="vehicle-gallery-thumbnails">
+                            <% vehicle.images.forEach((img) => { %>
+                                <button class="gallery-thumb" onclick="document.getElementById('mainImage').src = '<%= img.image_path %>'">
+                                    <img src="<%= img.image_path %>" alt="<%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %>" loading="lazy">
+                                </button>
+                            <% }) %>
+                        </div>
+                    <% } %>
+                </div>
+            <% } %>
+
+            <div class="vehicle-info">
+                <p><strong>Category:</strong> <%= vehicle.category_name %></p>
+                <p><strong>Price:</strong> $<%= Number(vehicle.price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></p>
+                <p><strong>Mileage:</strong> <%= Number(vehicle.mileage).toLocaleString() %> miles</p>
+                
+                <% if (vehicle.description) { %>
+                    <div class="vehicle-description">
+                        <h2>Description</h2>
+                        <p><%= vehicle.description %></p>
+                    </div>
+                <% } %>
+
+                 <!-- Reviews Section -->
+                 <div class="reviews-section">
+                     <h2>Customer Reviews</h2>
+                     <% if (reviews && reviews.length > 0) { %>
+                         <div class="reviews-list">
+                             <% reviews.forEach((review) => { %>
+                                 <%- include('../../partials/reviewCard', { review }) %>
+                             <% }) %>
+                         </div>
+                     <% } else { %>
+                         <p class="no-reviews">No reviews yet. Be the first to review this vehicle!</p>
+                     <% } %>
+
+                     <% if (isLoggedIn) { %>
+                         <div class="add-review-section">
+                             <h3>Add Your Review</h3>
+                             <form method="POST" action="/inventory/<%= vehicle.id %>/review" class="review-form">
+                                 <div class="form-group">
+                                     <label for="rating">Rating:</label>
+                                     <select id="rating" name="rating" required>
+                                         <option value="">Select a rating</option>
+                                         <option value="5">5 Stars</option>
+                                         <option value="4">4 Stars</option>
+                                         <option value="3">3 Stars</option>
+                                         <option value="2">2 Stars</option>
+                                         <option value="1">1 Star</option>
+                                     </select>
+                                 </div>
+                                 <div class="form-group">
+                                     <label for="review_text">Your Review:</label>
+                                     <textarea id="review_text" name="review_text" rows="3" required></textarea>
+                                 </div>
+                                 <button type="submit" class="btn btn-primary">Submit Review</button>
+                             </form>
+                         </div>
+                     <% } %>
+                 </div>
+
+                 <!-- Rental Section -->
+                 <% if (isLoggedIn) { %>
+                     <div class="rental-section">
+                         <h2>Rent This Vehicle</h2>
+                         <form method="POST" action="/inventory/<%= vehicle.id %>/rent" class="rental-form">
+                             <div class="form-group">
+                                 <label for="start_date">Start Date:</label>
+                                 <input type="date" id="start_date" name="start_date" required
+                                        data-blocked='<%= typeof blockedDates !== 'undefined' ? blockedDates : '[]' %>'>
+                             </div>
+                             <div class="form-group">
+                                 <label for="end_date">End Date:</label>
+                                 <input type="date" id="end_date" name="end_date" required
+                                        data-blocked='<%= typeof blockedDates !== 'undefined' ? blockedDates : '[]' %>'>
+                             </div>
+                             <button type="submit" class="btn btn-primary">Submit Rental Request</button>
+                         </form>
+                     </div>
+                 <% } %>
+             </div>
+         </div>
+     </div>
+
+    <div class="vehicle-detail-card-footer">
         <a href="/inventory" class="btn">&larr; Back to Inventory</a>
     </div>
 </div>
+
+<script>
+(function() {
+    const startInput = document.getElementById('start_date');
+    const endInput = document.getElementById('end_date');
+    if (!startInput || !endInput) return;
+
+    // Parse blocked date ranges from the data attribute
+    let blockedRanges = [];
+    try {
+        blockedRanges = JSON.parse(startInput.getAttribute('data-blocked') || '[]');
+    } catch(e) {
+        blockedRanges = [];
+    }
+
+    if (blockedRanges.length === 0) return;
+
+    // Convert blocked ranges to a Set of date strings (YYYY-MM-DD) that are blocked
+    const blockedDateSet = new Set();
+    blockedRanges.forEach(function(range) {
+        const start = new Date(range.start_date);
+        const end = new Date(range.end_date);
+        const current = new Date(start);
+        while (current <= end) {
+            const year = current.getFullYear();
+            const month = String(current.getMonth() + 1).padStart(2, '0');
+            const day = String(current.getDate()).padStart(2, '0');
+            blockedDateSet.add(year + '-' + month + '-' + day);
+            current.setDate(current.getDate() + 1);
+        }
+    });
+
+    // Set min date to today
+    const today = new Date();
+    const todayStr = today.getFullYear() + '-' + 
+        String(today.getMonth() + 1).padStart(2, '0') + '-' + 
+        String(today.getDate()).padStart(2, '0');
+    startInput.setAttribute('min', todayStr);
+    endInput.setAttribute('min', todayStr);
+
+    // Disable blocked dates on both inputs
+    function disableBlockedDates(input) {
+        input.addEventListener('input', function() {
+            const val = this.value;
+            if (blockedDateSet.has(val)) {
+                this.setCustomValidity('This date is already booked. Please choose another date.');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+    }
+
+    disableBlockedDates(startInput);
+    disableBlockedDates(endInput);
+
+    // When start date changes, set end date min to start date
+    startInput.addEventListener('change', function() {
+        if (this.value) {
+            endInput.setAttribute('min', this.value);
+        }
+        // Clear end date if it's now before start
+        if (endInput.value && endInput.value < this.value) {
+            endInput.value = '';
+        }
+    });
+})();
+</script>

@@ -1,0 +1,44 @@
+<h1>Manage Rentals</h1>
+
+<%- include('../../partials/flash-messages') %>
+
+<% if (rentals && rentals.length > 0) { %>
+    <div class="rental-cards">
+        <% rentals.forEach((rental) => { %>
+            <div class="rental-card admin">
+                <div class="rental-card-header">
+                    <h3><%= rental.vehicle ? `${rental.vehicle.year} ${rental.vehicle.make} ${rental.vehicle.model}` : 'Unknown Vehicle' %></h3>
+                    <span class="status-badge status-<%= rental.status %>"><%= rental.status.charAt(0).toUpperCase() + rental.status.slice(1) %></span>
+                </div>
+                <div class="rental-card-body">
+                    <p><strong>Customer:</strong> <%= rental.user ? rental.user.name : 'Unknown' %></p>
+                    <p><strong>Start Date:</strong> <%= new Date(rental.start_date).toLocaleDateString() %></p>
+                    <p><strong>End Date:</strong> <%= new Date(rental.end_date).toLocaleDateString() %></p>
+                    <p><strong>Requested:</strong> <%= new Date(rental.created_at).toLocaleDateString() %></p>
+                </div>
+                <div class="rental-card-actions">
+                    <form method="POST" action="/admin/rentals/<%= rental.id %>/status" class="status-form">
+                        <select name="status" onchange="this.form.submit()">
+                            <option value="">Change Status...</option>
+                            <% if (rental.status === 'pending') { %>
+                                <option value="active">Approve (Active)</option>
+                                <option value="cancelled">Cancel</option>
+                            <% } else if (rental.status === 'active') { %>
+                                <option value="completed">Complete</option>
+                                <option value="cancelled">Cancel</option>
+                            <% } else if (rental.status === 'completed' || rental.status === 'cancelled') { %>
+                                <option value="" disabled>No actions available</option>
+                            <% } %>
+                        </select>
+                    </form>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+<% } else { %>
+    <p>No rental requests have been submitted yet.</p>
+<% } %>
+
+<div class="dashboard-link">
+    <a href="/dashboard">&larr; Back to Dashboard</a>
+</div>

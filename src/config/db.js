@@ -9,13 +9,15 @@ const state = {
     reviews: [],
     serviceRequests: [],
     contactMessages: [],
+    rentals: [],
     nextUserId: 1,
     nextCategoryId: 1,
     nextVehicleId: 1,
     nextImageId: 1,
     nextReviewId: 1,
     nextRequestId: 1,
-    nextMessageId: 1
+    nextMessageId: 1,
+    nextRentalId: 1
 };
 
 const initializeDemoData = async () => {
@@ -103,6 +105,17 @@ const initializeDemoData = async () => {
             availability: v.availability,
             image_path: v.image_path
         });
+    });
+
+    // --- Seed Rentals ---
+    state.rentals.push({
+        id: state.nextRentalId++,
+        user_id: 3,
+        vehicle_id: 4,
+        start_date: new Date().toISOString(),
+        end_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+        status: 'pending',
+        created_at: new Date().toISOString()
     });
 
     state.initialized = true;

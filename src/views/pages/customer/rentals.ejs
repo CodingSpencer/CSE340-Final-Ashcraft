@@ -1,0 +1,35 @@
+<h1>My Rentals</h1>
+
+<%- include('../../partials/flash-messages') %>
+
+<% if (rentals && rentals.length > 0) { %>
+    <div class="rental-cards">
+        <% rentals.forEach((rental) => { %>
+            <div class="rental-card">
+                <div class="rental-card-header">
+                    <h3><%= rental.vehicle ? `${rental.vehicle.year} ${rental.vehicle.make} ${rental.vehicle.model}` : 'Unknown Vehicle' %></h3>
+                    <span class="status-badge status-<%= rental.status %>"><%= rental.status.charAt(0).toUpperCase() + rental.status.slice(1) %></span>
+                </div>
+                <div class="rental-card-body">
+                    <p><strong>Start Date:</strong> <%= new Date(rental.start_date).toLocaleDateString() %></p>
+                    <p><strong>End Date:</strong> <%= new Date(rental.end_date).toLocaleDateString() %></p>
+                    <p><strong>Requested:</strong> <%= new Date(rental.created_at).toLocaleDateString() %></p>
+                </div>
+                <div class="rental-card-actions">
+                    <% if (rental.status === 'pending') { %>
+                        <form method="POST" action="/my-rentals/<%= rental.id %>/cancel" style="display:inline;">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to cancel this rental?')">Cancel Rental</button>
+                        </form>
+                    <% } %>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+<% } else { %>
+    <p>You have no rental requests yet.</p>
+    <a href="/inventory" class="btn">Browse Vehicles</a>
+<% } %>
+
+<div class="dashboard-link">
+    <a href="/dashboard">&larr; Back to Dashboard</a>
+</div>
