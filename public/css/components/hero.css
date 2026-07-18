@@ -2,8 +2,6 @@
     padding: var(--space-xl) var(--space-lg);
     text-align: center;
     background: var(--surface-glass);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border-glass);
     display: flex;
     flex-direction: column;

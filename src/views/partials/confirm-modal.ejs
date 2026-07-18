@@ -22,7 +22,7 @@
         return new Promise((resolve) => {
             titleEl.textContent = title || 'Are you sure?';
             messageEl.textContent = message || 'This action cannot be undone.';
-            modal.style.display = 'block';
+            modal.style.display = 'flex';
             
             const cleanup = () => {
                 modal.style.display = 'none';

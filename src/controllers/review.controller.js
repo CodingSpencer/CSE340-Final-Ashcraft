@@ -132,15 +132,15 @@ const handleDeleteReview = async (req, res) => {
         const deleted = await deleteReview(req.params.id);
         if (!deleted) {
             req.flash('error', 'Review not found.');
-            return res.redirect('back');
+            return res.redirect('/admin/reviews');
         }
 
         req.flash('success', 'Review deleted successfully.');
-        res.redirect('back');
+        res.redirect('/admin/reviews');
     } catch (error) {
         console.error('Error deleting review:', error);
         req.flash('error', 'Unable to delete review.');
-        res.redirect('back');
+        res.redirect('/admin/reviews');
     }
 };
 
