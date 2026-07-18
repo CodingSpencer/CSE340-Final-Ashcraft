@@ -1,4 +1,5 @@
 /* Components */
+@import "./button.css";
 @import "./hero.css";
 @import "./card.css";
 @import "./feature.css";    
@@ -12,24 +13,6 @@
 @import "./pages/home.css";
 @import "./pages/inventory.css";
 @import "./pages/login.css";
-
-/* Flash Message Auto-Fade */
-.flash-auto-fade {
-    animation: fadeOut 15s ease-in-out forwards;
-    animation-delay: 1s;
-    animation-fill-mode: forwards;
-}
-
-@keyframes fadeOut {
-    0% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-}
 
 /* Dashboard Cards */
 .dashboard-cards {
@@ -73,59 +56,129 @@
     color: var(--text-muted);
 }
 
-/* Flash Messages */
+/* Flash Messages - positioned below header so they don't overlap */
 .flash-messages {
     position: fixed;
-    top: 20px;
+    top: 80px;
     right: 20px;
-    z-index: 1000;
+    z-index: 999;
     display: flex;
     flex-direction: column;
     gap: var(--space-sm);
     max-width: 350px;
+    pointer-events: none;
 }
 
 .flash-message {
-    padding: var(--space-md) var(--space-lg);
+    padding: var(--space-sm) var(--space-md);
     border-radius: var(--radius-md);
     font-weight: 500;
     box-shadow: var(--shadow-md);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
     animation: slideIn 0.3s ease-out;
+    pointer-events: auto;
 }
 
-.flash-success {
-    background-color: #28a745;
+.flash-message-text {
+    flex: 1;
+}
+
+.flash-dismiss {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 1.3rem;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    opacity: 0.8;
+    transition: opacity var(--transition-base);
+    flex-shrink: 0;
+}
+
+.flash-dismiss:hover {
+    opacity: 1;
+}
+
+.flash-success, .flash-error {
     color: white;
+    /* Total duration 5.6s: 0.6s pumpIn + 5s fadeOut */
+    animation: pumpIn 0.6s ease-out, fadeOut 5s ease-in-out forwards;
+    /* Start fadeOut exactly when pumpIn finishes */
+    animation-delay: 0s, 0.6s;
 }
 
-.flash-error {
-    background-color: #dc3545;
-    color: white;
-}
+.flash-success { background-color: #28a745; }
+.flash-error { background-color: #dc3545; }
 
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateX(100%);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-.flash-auto-fade {
-    animation: fadeOut 3s ease-in-out forwards;
-    animation-delay: 2s;
+@keyframes pumpIn {
+    0% { opacity: 0; transform: translateX(100%) scale(0.5); }
+    50% { opacity: 1; transform: translateX(0) scale(1.05); }
+    100% { opacity: 1; transform: translateX(0) scale(1); }
 }
 
 @keyframes fadeOut {
-    0% {
-        opacity: 1;
-        transform: translateY(0);
+    /* 3s hold (60% of 5s) + 2s fade (40% of 5s) */
+    0%, 60% { 
+        opacity: 1; 
+        transform: translateX(0); 
     }
-    100% {
-        opacity: 0;
-        transform: translateY(-10px);
+    100% { 
+        opacity: 0; 
+        transform: translateX(0); 
     }
+}
+
+/* Confirmation Modal */
+.confirm-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.confirm-modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+}
+
+.confirm-modal-content {
+    position: relative;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    max-width: 400px;
+    width: 90%;
+    box-shadow: var(--shadow-md);
+    z-index: 1;
+}
+
+.confirm-modal-content h3 {
+    margin: 0 0 var(--space-sm) 0;
+    color: var(--title-color);
+}
+
+.confirm-modal-content p {
+    margin: 0 0 var(--space-lg) 0;
+    color: var(--text-color);
+}
+
+.confirm-modal-actions {
+    display: flex;
+    gap: var(--space-md);
+    justify-content: flex-end;
 }

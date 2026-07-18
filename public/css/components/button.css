@@ -1,0 +1,106 @@
+/* =============================================
+   Button System — Reusable across the entire app
+   ============================================= */
+
+/* Global Box-Sizing Reset 
+   (Ensures padding and borders don't distort button sizes) */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* Base Button */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-sm) var(--space-md);
+    background-color: var(--link-color);
+    color: white;
+    border: 1px solid transparent; /* Prevents layout shifting against border-only buttons */
+    border-radius: var(--radius-md);
+    font-weight: var(--font-medium);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color var(--transition-base), transform var(--transition-base), border-color var(--transition-base);
+    line-height: 1;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.btn:hover {
+    background-color: var(--link-hover-color);
+    transform: translateY(-1px);
+}
+
+/* Small Button Variant 
+   (Forces identical heights across different HTML tags) */
+.btn-sm {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: 0.85rem;
+    height: 32px; 
+}
+
+/* Primary Button — Green (action/primary actions) */
+.btn-primary {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #218838;
+    transform: translateY(-1px);
+}
+
+/* Danger Button — Red (destructive/delete actions) */
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Secondary Button — Gray (cancel/neutral actions) */
+.btn-secondary {
+    background-color: var(--text-muted);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: var(--text-color);
+}
+
+/* Edit Button — Green (edit/modify actions) */
+.btn-edit {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-edit:hover {
+    background-color: #218838;
+    transform: translateY(-1px);
+}
+
+/* Clear Button — Minimal, border-only (for filter clear, etc.) */
+.btn-clear {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-xs) var(--space-sm);
+    font-size: 0.85rem;
+    background-color: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color var(--transition-base), color var(--transition-base), border-color var(--transition-base);
+    font-weight: var(--font-medium);
+}
+
+.btn-clear:hover {
+    background-color: var(--surface-color);
+    color: var(--text-color);
+    border-color: var(--text-muted);
+}

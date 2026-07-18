@@ -103,17 +103,6 @@
     background-color: var(--error-bg, #fdecea);
 }
 
-.vehicle-card .btn {
-    margin-top: var(--space-sm);
-    text-align: center;
-    /* Assuming you have a base button class */
-    text-decoration: none;
-    background-color: var(--primary-color);
-    color: white;
-    padding: var(--space-xs) var(--space-md);
-    border-radius: var(--radius-md);
-}
-
 .vehicle-card:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-md);
@@ -204,6 +193,12 @@
     justify-content: space-between;
     align-items: center;
     margin-top: var(--space-sm);
+}
+
+.review-actions {
+    display: flex;
+    gap: var(--space-sm);
+    align-items: center;
 }
 
 /* User Card */

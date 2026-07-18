@@ -11,7 +11,6 @@
 <% } %>
 
 <div class="dashboard-links">
-    <h2>Menu</h2>
     <div class="dashboard-cards">
         <!-- Common for all roles -->
         <a href="/inventory" class="dashboard-card">
@@ -93,5 +92,5 @@
 </div>
 
 <form method="POST" action="/logout">
-    <button type="submit" class="btn btn-danger">Log out</button>
+    <button type="submit" class="btn btn-danger" data-confirm="Are you sure you want to log out?">Log out</button>
 </form>
