@@ -1,4 +1,6 @@
 import bcrypt from 'bcrypt';
+import fs from 'fs';
+import path from 'path';
 
 // Check if we should use in-memory storage (for development without database)
 const useMemoryStorage = !process.env.DATABASE_URL;
@@ -28,11 +30,13 @@ const state = {
 let pool = null;
 if (!useMemoryStorage) {
     const { Pool } = await import('pg');
+    const certPath = path.join(process.cwd(), 'public', 'byuicse-psql-cert.pem');
+    const cert = fs.readFileSync(certPath, 'utf8');
     pool = new Pool({
         connectionString: process.env.DATABASE_URL,
         ssl: {
             rejectUnauthorized: false,
-            ca: process.env.NODE_ENV === 'production' ? process.env.DB_CERT : undefined
+            ca: cert
         }
     });
 }

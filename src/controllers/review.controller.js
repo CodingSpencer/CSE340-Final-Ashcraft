@@ -1,4 +1,5 @@
 import { findReviewsByVehicle, findReviewById, findReviewsByUser, createReview, updateReview, deleteReview } from '../models/review.model.js';
+import { getDb, pool, useMemoryStorage } from '../config/db.js';
 import { findVehicleById } from '../models/vehicle.model.js';
 
 const showCreateReviewForm = async (req, res) => {
@@ -143,6 +144,63 @@ const handleDeleteReview = async (req, res) => {
     }
 };
 
+const showAdminReviews = async (req, res) => {
+    try {
+        const db = await getDb();
+        let reviews;
+        
+        if (useMemoryStorage) {
+            reviews = db.reviews.map((r) => {
+                const user = db.users.find((u) => u.id === r.user_id);
+                const vehicle = db.vehicles.find((v) => v.id === r.vehicle_id);
+                return {
+                    ...r,
+                    user: user || null,
+                    vehicle: vehicle ? {
+                        id: vehicle.id,
+                        year: vehicle.year,
+                        make: vehicle.make,
+                        model: vehicle.model
+                    } : null
+                };
+            }).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        } else {
+            const result = await pool.query(
+                `SELECT r.*, u.name as user_name, u.email as user_email,
+                        v.id as vehicle_id, v.year, v.make, v.model
+                 FROM reviews r
+                 LEFT JOIN users u ON r.user_id = u.id
+                 LEFT JOIN vehicles v ON r.vehicle_id = v.id
+                 ORDER BY r.created_at DESC`
+            );
+            reviews = result.rows.map((r) => ({
+                id: r.id,
+                user_id: r.user_id,
+                vehicle_id: r.vehicle_id,
+                rating: r.rating,
+                review_text: r.review_text,
+                created_at: r.created_at,
+                user: r.user_name ? { id: r.user_id, name: r.user_name, email: r.user_email } : null,
+                vehicle: r.vehicle_id ? {
+                    id: r.vehicle_id,
+                    year: r.year,
+                    make: r.make,
+                    model: r.model
+                } : null
+            }));
+        }
+        
+        res.render('pages/admin/reviews', {
+            title: 'Manage Reviews',
+            reviews
+        });
+    } catch (error) {
+        console.error('Error loading admin reviews:', error);
+        req.flash('error', 'Unable to load reviews.');
+        res.redirect('/dashboard');
+    }
+};
+
 export { 
     showCreateReviewForm, 
     handleCreateReview, 
@@ -150,5 +208,6 @@ export {
     showEditReviewForm,
     handleUpdateReview,
     handleDeleteMyReview,
-    handleDeleteReview 
+    handleDeleteReview,
+    showAdminReviews
 };

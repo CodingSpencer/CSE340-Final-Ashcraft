@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test tests/*.test.js",
     "start": "node server.js",
     "dev": "npm run css && nodemon server.js",
     "css": "lightningcss --minify --bundle --targets \">= 0.25%\" public/css/main.css -o dist/main.css",
@@ -24,6 +24,7 @@
   "homepage": "https://github.com/CodingSpencer/CSE340-Final-Ashcraft#readme",
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "dotenv": "^17.4.2",
     "ejs": "^6.0.1",
     "esm": "^3.2.25",
     "express": "^5.2.1",
