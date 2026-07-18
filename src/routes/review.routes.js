@@ -25,6 +25,7 @@ router.post('/my-reviews/:id/delete', requireLogin, handleDeleteMyReview);
 
 // Admin/Employee routes - delete a review
 router.post('/admin/reviews/:id/delete', requireLogin, checkAdminOrEmployee, handleDeleteReview);
-// Admin/Employee routes - view all reviewsrouter.get('/admin/reviews', requireLogin, checkAdminOrEmployee, showAdminReviews);
+// Admin/Employee routes - view all reviews
+router.get('/admin/reviews', requireLogin, checkAdminOrEmployee, showAdminReviews);
 
 export default router;

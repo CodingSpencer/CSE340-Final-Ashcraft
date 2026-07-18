@@ -1,4 +1,7 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import bcrypt from 'bcrypt';
+import vehicleData from '../../public/assets/json/vehicles.json' with { type: 'json' };
 import fs from 'fs';
 import path from 'path';
 
@@ -36,7 +39,7 @@ if (!useMemoryStorage) {
         connectionString: process.env.DATABASE_URL,
         ssl: {
             rejectUnauthorized: false,
-            ca: cert
+            ca: fs.readFileSync(path.join(process.cwd(), 'public', 'byuicse-psql-cert.pem')).toString()
         }
     });
 }
@@ -104,16 +107,7 @@ const initializeDemoData = async () => {
         });
 
         // --- Seed Vehicles ---
-        const vehicleData = [
-            { category_id: 1, make: 'Toyota', model: 'Corolla', year: 2022, mileage: 25000, price: 22000.00, description: 'Excellent commuter car, great gas mileage for driving around campus or town.', availability: true, image_path: '/assets/imgs/vehicles/Toyota_Corolla.jpg' },
-            { category_id: 2, make: 'Chevrolet', model: 'Silverado 1500', year: 2018, mileage: 75000, price: 31000.00, description: 'Perfect for hauling gear or navigating Idaho winters. Four-wheel drive and well maintained.', availability: true, image_path: '/assets/imgs/vehicles/Chevrolet_Silverado.jpg' },
-            { category_id: 3, make: 'Honda', model: 'CR-V', year: 2021, mileage: 40000, price: 26500.00, description: 'Spacious interior and all-wheel drive capabilities. A reliable choice for students and families alike.', availability: true, image_path: '/assets/imgs/vehicles/Honda_CR-V.jpg' },
-            { category_id: 4, make: 'Chrysler', model: 'Pacifica', year: 2019, mileage: 60000, price: 24000.00, description: 'Comfortable seating for seven with stow-and-go capabilities. Freshly detailed.', availability: false, image_path: '/assets/imgs/vehicles/Chrysler_Pacifica.jpg' },
-            { category_id: 1, make: 'Ford', model: 'Mustang', year: 2023, mileage: 12000, price: 35000.00, description: 'Sporty and fast. Garage kept, one previous owner, and in pristine condition.', availability: true, image_path: '/assets/imgs/vehicles/Ford_Mustang.jpg' },
-            { category_id: 3, make: 'Jeep', model: 'Wrangler', year: 2017, mileage: 85000, price: 27500.00, description: 'Trail-ready with upgraded off-road tires and a removable hardtop.', availability: true, image_path: '/assets/imgs/vehicles/Jeep_Wrangler.jpg' },
-            { category_id: 2, make: 'Toyota', model: 'Tacoma', year: 2020, mileage: 52000, price: 33000.00, description: 'Highly dependable mid-size truck with a composite bed and excellent resale value.', availability: true, image_path: '/assets/imgs/vehicles/Toyota_Tacoma.jpg' },
-            { category_id: 1, make: 'Hyundai', model: 'Elantra', year: 2016, mileage: 110000, price: 10500.00, description: 'Budget-friendly option with a clean Carfax. Recently serviced with new brake pads.', availability: true, image_path: '/assets/imgs/vehicles/Hyundai_Elantra.jpg' }
-        ];
+        const vehicles = vehicleData;
 
         vehicleData.forEach((v) => {
             state.vehicles.push({
@@ -142,8 +136,8 @@ const initializeDemoData = async () => {
         });
     } else {
         // PostgreSQL initialization
-        const userCheck = await pool.query('SELECT COUNT(*) FROM users');
-        if (parseInt(userCheck.rows[0].count) > 0) {
+        const vehicleCheck = await pool.query('SELECT COUNT(*) FROM vehicles');
+        if (parseInt(vehicleCheck.rows[0].count) >= 8) {
             return;
         }
 
@@ -151,18 +145,18 @@ const initializeDemoData = async () => {
         const hashedPassword = await bcrypt.hash('password123', 10);
         
         await pool.query(
-            'INSERT INTO users (name, email, password, roleName, createdAt) VALUES ($1, $2, $3, $4, $5)',
-            ['Admin User', 'admin@example.com', hashedPassword, 'admin', new Date().toISOString()]
+            'INSERT INTO users (firstname, lastname, email, password, role, created_at) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (email) DO NOTHING',
+            ['Admin', 'User', 'admin@example.com', hashedPassword, 'Owner', new Date().toISOString()]
         );
         
         await pool.query(
-            'INSERT INTO users (name, email, password, roleName, createdAt) VALUES ($1, $2, $3, $4, $5)',
-            ['Employee User', 'employee@example.com', hashedPassword, 'employee', new Date().toISOString()]
+            'INSERT INTO users (firstname, lastname, email, password, role, created_at) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (email) DO NOTHING',
+            ['Employee', 'User', 'employee@example.com', hashedPassword, 'Employee', new Date().toISOString()]
         );
         
         await pool.query(
-            'INSERT INTO users (name, email, password, roleName, createdAt) VALUES ($1, $2, $3, $4, $5)',
-            ['Customer User', 'customer@example.com', hashedPassword, 'customer', new Date().toISOString()]
+            'INSERT INTO users (firstname, lastname, email, password, role, created_at) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (email) DO NOTHING',
+            ['Customer', 'User', 'customer@example.com', hashedPassword, 'Customer', new Date().toISOString()]
         );
 
         // --- Seed Categories ---
@@ -175,22 +169,19 @@ const initializeDemoData = async () => {
         }
 
         // --- Seed Vehicles ---
-        const vehicleData = [
-            { category_id: 1, make: 'Toyota', model: 'Corolla', year: 2022, mileage: 25000, price: 22000.00, description: 'Excellent commuter car, great gas mileage for driving around campus or town.', availability: true, image_path: '/assets/imgs/vehicles/Toyota_Corolla.jpg' },
-            { category_id: 2, make: 'Chevrolet', model: 'Silverado 1500', year: 2018, mileage: 75000, price: 31000.00, description: 'Perfect for hauling gear or navigating Idaho winters. Four-wheel drive and well maintained.', availability: true, image_path: '/assets/imgs/vehicles/Chevrolet_Silverado.jpg' },
-            { category_id: 3, make: 'Honda', model: 'CR-V', year: 2021, mileage: 40000, price: 26500.00, description: 'Spacious interior and all-wheel drive capabilities. A reliable choice for students and families alike.', availability: true, image_path: '/assets/imgs/vehicles/Honda_CR-V.jpg' },
-            { category_id: 4, make: 'Chrysler', model: 'Pacifica', year: 2019, mileage: 60000, price: 24000.00, description: 'Comfortable seating for seven with stow-and-go capabilities. Freshly detailed.', availability: false, image_path: '/assets/imgs/vehicles/Chrysler_Pacifica.jpg' },
-            { category_id: 1, make: 'Ford', model: 'Mustang', year: 2023, mileage: 12000, price: 35000.00, description: 'Sporty and fast. Garage kept, one previous owner, and in pristine condition.', availability: true, image_path: '/assets/imgs/vehicles/Ford_Mustang.jpg' },
-            { category_id: 3, make: 'Jeep', model: 'Wrangler', year: 2017, mileage: 85000, price: 27500.00, description: 'Trail-ready with upgraded off-road tires and a removable hardtop.', availability: true, image_path: '/assets/imgs/vehicles/Jeep_Wrangler.jpg' },
-            { category_id: 2, make: 'Toyota', model: 'Tacoma', year: 2020, mileage: 52000, price: 33000.00, description: 'Highly dependable mid-size truck with a composite bed and excellent resale value.', availability: true, image_path: '/assets/imgs/vehicles/Toyota_Tacoma.jpg' },
-            { category_id: 1, make: 'Hyundai', model: 'Elantra', year: 2016, mileage: 110000, price: 10500.00, description: 'Budget-friendly option with a clean Carfax. Recently serviced with new brake pads.', availability: true, image_path: '/assets/imgs/vehicles/Hyundai_Elantra.jpg' }
-        ];
-
         for (const v of vehicleData) {
             await pool.query(
-                'INSERT INTO vehicles (category_id, make, model, year, mileage, price, description, availability, image_path) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
-                [v.category_id, v.make, v.model, v.year, v.mileage, v.price, v.description, v.availability, v.image_path]
+                'INSERT INTO vehicles (category_id, make, model, year, mileage, price, description, availability) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+                [v.category_id, v.make, v.model, v.year, v.mileage, v.price, v.description, v.availability]
             );
+            
+            // Insert vehicle image if available
+            if (v.image_path) {
+                await pool.query(
+                    'INSERT INTO vehicle_images (vehicle_id, image_path) VALUES (currval(pg_get_serial_sequence(\'vehicles\', \'vehicle_id\')), $1)',
+                    [v.image_path]
+                );
+            }
         }
     }
 

@@ -123,18 +123,18 @@ const findRentalsByUser = async (userId) => {
     }
     
     const result = await pool.query(
-        `SELECT r.*, v.id as vehicle_id, v.year, v.make, v.model, v.image_path,
-                u.id as user_id, u.name as user_name, u.email as user_email
+        `SELECT r.*, v.vehicle_id, v.year, v.make, v.model,
+                u.user_id, u.firstname, u.lastname, u.email
          FROM rentals r
-         LEFT JOIN vehicles v ON r.vehicle_id = v.id
-         LEFT JOIN users u ON r.user_id = u.id
+         LEFT JOIN vehicles v ON r.vehicle_id = v.vehicle_id
+         LEFT JOIN users u ON r.user_id = u.user_id
          WHERE r.user_id = $1
          ORDER BY r.created_at DESC`,
         [userId]
     );
     
     return result.rows.map((r) => ({
-        id: r.id,
+        id: r.rental_id,
         user_id: r.user_id,
         vehicle_id: r.vehicle_id,
         start_date: r.start_date,
@@ -145,8 +145,7 @@ const findRentalsByUser = async (userId) => {
             id: r.vehicle_id,
             year: r.year,
             make: r.make,
-            model: r.model,
-            image_path: r.image_path
+            model: r.model
         } : null
     }));
 };
@@ -165,16 +164,16 @@ const findAllRentals = async () => {
     }
     
     const result = await pool.query(
-        `SELECT r.*, v.id as vehicle_id, v.year, v.make, v.model, v.image_path,
-                u.id as user_id, u.name as user_name, u.email as user_email
+        `SELECT r.*, v.vehicle_id, v.year, v.make, v.model,
+                u.user_id, u.firstname, u.lastname, u.email
          FROM rentals r
-         LEFT JOIN vehicles v ON r.vehicle_id = v.id
-         LEFT JOIN users u ON r.user_id = u.id
+         LEFT JOIN vehicles v ON r.vehicle_id = v.vehicle_id
+         LEFT JOIN users u ON r.user_id = u.user_id
          ORDER BY r.created_at DESC`
     );
     
     return result.rows.map((r) => ({
-        id: r.id,
+        id: r.rental_id,
         user_id: r.user_id,
         vehicle_id: r.vehicle_id,
         start_date: r.start_date,
@@ -185,13 +184,12 @@ const findAllRentals = async () => {
             id: r.vehicle_id,
             year: r.year,
             make: r.make,
-            model: r.model,
-            image_path: r.image_path
+            model: r.model
         } : null,
         user: r.user_id ? {
             id: r.user_id,
-            name: r.user_name,
-            email: r.user_email
+            name: r.firstname + ' ' + r.lastname,
+            email: r.email
         } : null
     }));
 };
@@ -209,12 +207,12 @@ const findRentalById = async (id) => {
     }
     
     const result = await pool.query(
-        `SELECT r.*, v.id as vehicle_id, v.year, v.make, v.model, v.image_path,
-                u.id as user_id, u.name as user_name, u.email as user_email
+        `SELECT r.*, v.vehicle_id, v.year, v.make, v.model, v.image_path,
+                u.user_id, u.firstname, u.lastname, u.email
          FROM rentals r
-         LEFT JOIN vehicles v ON r.vehicle_id = v.id
-         LEFT JOIN users u ON r.user_id = u.id
-         WHERE r.id = $1`,
+         LEFT JOIN vehicles v ON r.vehicle_id = v.vehicle_id
+         LEFT JOIN users u ON r.user_id = u.user_id
+         WHERE r.rental_id = $1`,
         [id]
     );
     
@@ -222,7 +220,7 @@ const findRentalById = async (id) => {
     
     const r = result.rows[0];
     return {
-        id: r.id,
+        id: r.rental_id,
         user_id: r.user_id,
         vehicle_id: r.vehicle_id,
         start_date: r.start_date,
@@ -238,8 +236,8 @@ const findRentalById = async (id) => {
         } : null,
         user: r.user_id ? {
             id: r.user_id,
-            name: r.user_name,
-            email: r.user_email
+            name: r.firstname + ' ' + r.lastname,
+            email: r.email
         } : null
     };
 };

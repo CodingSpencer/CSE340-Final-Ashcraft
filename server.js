@@ -10,6 +10,7 @@ import accountRoutes from './src/routes/account.routes.js';
 import inventoryRoutes from './src/routes/inventory.routes.js';
 import rentalRoutes from './src/routes/rental.routes.js';
 import reviewRoutes from './src/routes/review.routes.js';
+import adminRoutes from './src/routes/admin.routes.js';
 import { authContextMiddleware, flashMiddleware, sessionMiddleware } from './src/config/session.js';
 import { initializeDemoData } from './src/config/db.js';
 
@@ -44,6 +45,7 @@ app.use('/', accountRoutes);
 app.use('/inventory', inventoryRoutes);
 app.use('/', rentalRoutes);
 app.use('/', reviewRoutes);
+app.use('/', adminRoutes);
 
 // Initialize database on startup
 if (process.env.NODE_ENV !== 'test') {

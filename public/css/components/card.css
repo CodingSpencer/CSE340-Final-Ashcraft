@@ -120,3 +120,153 @@
     border-color: color-mix(in oklch, var(--border-color) 70%, var(--primary-color));
 }
 
+
+/* Admin Vehicle Card */
+.vehicle-card.admin {
+    flex-direction: row;
+}
+
+.vehicle-card.admin .vehicle-card-image {
+    width: 150px;
+    height: 100px;
+}
+
+.vehicle-card.admin .vehicle-card-content {
+    flex: 1;
+}
+
+.vehicle-card.admin .vehicle-card-actions {
+    padding: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+/* Rental Card */
+.rental-card {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.rental-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rental-card-header h3 {
+    margin: 0;
+    color: var(--title-color);
+}
+
+.rental-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.rental-card-actions {
+    margin-top: var(--space-sm);
+}
+
+/* Review Card */
+.review-card {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.review-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+
+.review-card-body {
+    padding: var(--space-sm) 0;
+}
+
+.review-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--space-sm);
+}
+
+/* User Card */
+.user-card {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-card-content h3 {
+    margin: 0 0 var(--space-xs) 0;
+    color: var(--title-color);
+}
+
+.user-card-content p {
+    margin: 0;
+    color: var(--text-muted);
+}
+
+/* Admin Actions */
+.admin-actions {
+    margin-bottom: var(--space-lg);
+}
+
+/* Status Badge */
+.status-badge {
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-active {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-completed {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.status-cancelled {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Star Rating */
+.star {
+    color: #ccc;
+    font-size: 1.2rem;
+}
+
+.star.filled {
+    color: #ffc107;
+}

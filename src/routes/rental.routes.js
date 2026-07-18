@@ -7,7 +7,7 @@ import {
     handleUpdateRentalStatus,
     handleCancelMyRental
 } from '../controllers/rental.controller.js';
-import { requireLogin } from '../middleware/auth.js';
+import { requireLogin, checkAdminOrEmployee } from '../middleware/auth.js';
 
 const router = Router();
 
@@ -20,7 +20,7 @@ router.get('/my-rentals', requireLogin, showMyRentals);
 router.post('/my-rentals/:id/cancel', requireLogin, handleCancelMyRental);
 
 // Admin/Employee routes - manage all rentals
-router.get('/admin/rentals', requireLogin, showAllRentals);
-router.post('/admin/rentals/:id/status', requireLogin, handleUpdateRentalStatus);
+router.get('/admin/rentals', requireLogin, checkAdminOrEmployee, showAllRentals);
+router.post('/admin/rentals/:id/status', requireLogin, checkAdminOrEmployee, handleUpdateRentalStatus);
 
 export default router;

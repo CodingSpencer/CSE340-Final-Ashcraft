@@ -2,7 +2,9 @@
 
 <%- include('../../partials/flash-messages') %>
 
-<p>Welcome, <%= user.name %>!</p>
+<div class="dashboard-role">
+    <strong>Role:</strong> <%= user.roleName %>
+</div>
 
 <div class="dashboard-links">
     <h2>Menu</h2>
@@ -17,7 +19,7 @@
         </a>
 
         <!-- Customer specific -->
-        <% if (user.roleName === 'customer') { %>
+        <% if (user.roleName && user.roleName.toLowerCase() === 'customer') { %>
             <a href="/my-rentals" class="dashboard-card">
                 <div class="dashboard-card-icon">📅</div>
                 <div class="dashboard-card-content">
@@ -35,7 +37,7 @@
         <% } %>
 
         <!-- Employee specific -->
-        <% if (user.roleName === 'employee') { %>
+        <% if (user.roleName && user.roleName.toLowerCase() === 'employee') { %>
             <a href="/admin/rentals" class="dashboard-card">
                 <div class="dashboard-card-icon">📋</div>
                 <div class="dashboard-card-content">
@@ -53,7 +55,7 @@
         <% } %>
 
         <!-- Admin specific -->
-        <% if (user.roleName === 'admin') { %>
+        <% if (user.roleName && user.roleName.toLowerCase() === 'owner') { %>
             <a href="/admin/rentals" class="dashboard-card">
                 <div class="dashboard-card-icon">📋</div>
                 <div class="dashboard-card-content">

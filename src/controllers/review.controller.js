@@ -166,21 +166,21 @@ const showAdminReviews = async (req, res) => {
             }).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
         } else {
             const result = await pool.query(
-                `SELECT r.*, u.name as user_name, u.email as user_email,
-                        v.id as vehicle_id, v.year, v.make, v.model
+                `SELECT r.*, u.firstname, u.lastname, u.email,
+                        v.vehicle_id, v.year, v.make, v.model
                  FROM reviews r
-                 LEFT JOIN users u ON r.user_id = u.id
-                 LEFT JOIN vehicles v ON r.vehicle_id = v.id
+                 LEFT JOIN users u ON r.user_id = u.user_id
+                 LEFT JOIN vehicles v ON r.vehicle_id = v.vehicle_id
                  ORDER BY r.created_at DESC`
             );
             reviews = result.rows.map((r) => ({
-                id: r.id,
+                id: r.review_id,
                 user_id: r.user_id,
                 vehicle_id: r.vehicle_id,
                 rating: r.rating,
                 review_text: r.review_text,
                 created_at: r.created_at,
-                user: r.user_name ? { id: r.user_id, name: r.user_name, email: r.user_email } : null,
+                user: r.firstname ? { id: r.user_id, name: r.firstname + ' ' + r.lastname, email: r.email } : null,
                 vehicle: r.vehicle_id ? {
                     id: r.vehicle_id,
                     year: r.year,

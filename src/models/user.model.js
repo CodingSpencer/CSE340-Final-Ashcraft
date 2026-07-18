@@ -1,12 +1,16 @@
 import bcrypt from 'bcrypt';
 import { getDb, pool, useMemoryStorage } from '../config/db.js';
 
-const buildUserSession = (user) => ({
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    roleName: user.roleName || 'customer'
-});
+const buildUserSession = (user) => {
+    const name = (user.firstname || user.name || '') + ' ' + (user.lastname || '');
+    return {
+        id: user.user_id || user.id,
+        name: name.trim() || 'Unknown',
+        email: user.email,
+        password: user.password,
+        roleName: user.role || user.roleName || 'customer'
+    };
+};
 
 const findUserByEmail = async (email) => {
     const db = await getDb();
@@ -19,21 +23,21 @@ const findUserByEmail = async (email) => {
         'SELECT * FROM users WHERE email = $1',
         [email.toLowerCase()]
     );
-    return result.rows[0] || null;
+    return result.rows[0] ? buildUserSession(result.rows[0]) : null;
 };
 
 const findUserById = async (id) => {
     const db = await getDb();
     
     if (useMemoryStorage) {
-        return db.users.find((user) => user.id === Number(id)) || null;
+        return db.users.find((user) => user.id === Number(id) || user.user_id === Number(id)) || null;
     }
     
     const result = await pool.query(
-        'SELECT * FROM users WHERE id = $1',
+        'SELECT * FROM users WHERE user_id = $1',
         [id]
     );
-    return result.rows[0] || null;
+    return result.rows[0] ? buildUserSession(result.rows[0]) : null;
 };
 
 const createUser = async (name, email, password, roleName = 'customer') => {
@@ -52,11 +56,16 @@ const createUser = async (name, email, password, roleName = 'customer') => {
         return buildUserSession(user);
     }
     
+    // Split name into firstname and lastname
+    const nameParts = name.split(' ');
+    const firstname = nameParts[0] || name;
+    const lastname = nameParts.slice(1).join(' ') || '';
+    
     const result = await pool.query(
-        `INSERT INTO users (name, email, password, roleName, createdAt)
-         VALUES ($1, $2, $3, $4, $5)
+        `INSERT INTO users (firstname, lastname, email, password, role, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6)
          RETURNING *`,
-        [name, email.toLowerCase(), password, roleName, new Date().toISOString()]
+        [firstname, lastname, email.toLowerCase(), password, roleName, new Date().toISOString()]
     );
     return buildUserSession(result.rows[0]);
 };
@@ -109,7 +118,7 @@ const updateUserById = async (id, updates) => {
 
     values.push(id);
     const result = await pool.query(
-        `UPDATE users SET ${fields.join(', ')} WHERE id = $${paramCount} RETURNING *`,
+        `UPDATE users SET ${fields.join(', ')} WHERE user_id = ${paramCount} RETURNING *`,
         values
     );
 
@@ -120,14 +129,14 @@ const deleteUserById = async (id) => {
     const db = await getDb();
     
     if (useMemoryStorage) {
-        const index = db.users.findIndex((user) => user.id === Number(id));
+        const index = db.users.findIndex((user) => user.id === Number(id) || user.user_id === Number(id));
         if (index === -1) return false;
         db.users.splice(index, 1);
         return true;
     }
     
     const result = await pool.query(
-        'DELETE FROM users WHERE id = $1',
+        'DELETE FROM users WHERE user_id = $1',
         [id]
     );
     return result.rowCount > 0;

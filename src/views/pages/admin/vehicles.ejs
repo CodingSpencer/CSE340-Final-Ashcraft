@@ -1,0 +1,46 @@
+<h1>Manage Vehicles</h1>
+
+<%- include('../../partials/flash-messages') %>
+
+<div class="admin-actions">
+    <a href="/admin/vehicles/add" class="btn btn-primary">Add New Vehicle</a>
+</div>
+
+<% if (vehicles && vehicles.length > 0) { %>
+    <div class="vehicle-cards">
+        <% vehicles.forEach((vehicle) => { %>
+            <div class="vehicle-card admin">
+                <div class="vehicle-card-image">
+                    <% if (vehicle.primary_image) { %>
+                        <img src="<%= vehicle.primary_image %>" alt="<%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %>">
+                    <% } else { %>
+                        <div class="no-image">No Image</div>
+                    <% } %>
+                </div>
+                <div class="vehicle-card-content">
+                    <h3><%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %></h3>
+                    <p class="vehicle-price">$<%= vehicle.price.toLocaleString() %></p>
+                    <p class="vehicle-mileage"><%= vehicle.mileage.toLocaleString() %> miles</p>
+                    <p class="vehicle-category"><%= vehicle.category_name || 'Uncategorized' %></p>
+                    <p class="vehicle-availability">
+                        <span class="status-badge status-<%= vehicle.availability ? 'available' : 'unavailable' %>">
+                            <%= vehicle.availability ? 'Available' : 'Unavailable' %>
+                        </span>
+                    </p>
+                </div>
+                <div class="vehicle-card-actions">
+                    <a href="/admin/vehicles/<%= vehicle.id %>/edit" class="btn btn-secondary btn-sm">Edit</a>
+                    <form method="POST" action="/admin/vehicles/<%= vehicle.id %>/delete" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this vehicle?')">Delete</button>
+                    </form>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+<% } else { %>
+    <p>No vehicles have been added yet.</p>
+<% } %>
+
+<div class="dashboard-link">
+    <a href="/dashboard">&larr; Back to Dashboard</a>
+</div>

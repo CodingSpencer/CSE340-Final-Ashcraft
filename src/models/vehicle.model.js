@@ -21,12 +21,12 @@ const listVehicles = async (categoryId = null) => {
     }
     
     let query = `
-        SELECT v.*, c.category_name,
+        SELECT v.*, c.category_id, c.category_name,
                (SELECT i.image_path FROM vehicle_images i 
-                WHERE i.vehicle_id = v.id 
+                WHERE i.vehicle_id = v.vehicle_id 
                 LIMIT 1) as primary_image
         FROM vehicles v
-        LEFT JOIN categories c ON v.category_id = c.id
+        LEFT JOIN categories c ON v.category_id = c.category_id
     `;
     let params = [];
 
@@ -35,11 +35,11 @@ const listVehicles = async (categoryId = null) => {
         params.push(categoryId);
     }
 
-    query += ' ORDER BY v.id';
+    query += ' ORDER BY v.vehicle_id';
 
     const result = await pool.query(query, params);
     return result.rows.map((v) => ({
-        id: v.id,
+        id: v.vehicle_id,
         category_id: v.category_id,
         make: v.make,
         model: v.model,
@@ -76,10 +76,10 @@ const findVehicleById = async (id) => {
     }
     
     const result = await pool.query(
-        `SELECT v.*, c.category_name
+        `SELECT v.*, c.category_id, c.category_name
          FROM vehicles v
-         LEFT JOIN categories c ON v.category_id = c.id
-         WHERE v.id = $1`,
+         LEFT JOIN categories c ON v.category_id = c.category_id
+         WHERE v.vehicle_id = $1`,
         [id]
     );
 
@@ -100,7 +100,7 @@ const findVehicleById = async (id) => {
     }
 
     return {
-        id: vehicle.id,
+        id: vehicle.vehicle_id,
         category_id: vehicle.category_id,
         make: vehicle.make,
         model: vehicle.model,
@@ -205,7 +205,7 @@ const updateVehicle = async (id, updates) => {
 
     values.push(id);
     const result = await pool.query(
-        `UPDATE vehicles SET ${fields.join(', ')} WHERE id = $${paramCount} RETURNING *`,
+        `UPDATE vehicles SET ${fields.join(', ')} WHERE vehicle_id = ${paramCount} RETURNING *`,
         values
     );
 
@@ -223,7 +223,7 @@ const deleteVehicle = async (id) => {
     }
     
     const result = await pool.query(
-        'DELETE FROM vehicles WHERE id = $1',
+        'DELETE FROM vehicles WHERE vehicle_id = $1',
         [id]
     );
     return result.rowCount > 0;

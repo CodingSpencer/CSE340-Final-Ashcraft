@@ -46,7 +46,7 @@ const checkEmployee = requireRole('employee');
 /**
  * Middleware to require admin (owner) role.
  */
-const checkAdmin = requireRole('admin');
+const checkAdmin = requireRole('Owner');
 
 /**
  * Middleware to require customer role.
@@ -63,7 +63,7 @@ const checkAdminOrEmployee = (req, res, next) => {
         return res.redirect('/login');
     }
 
-    if (req.session.user.roleName !== 'admin' && req.session.user.roleName !== 'employee') {
+    if (req.session.user.roleName !== 'Owner' && req.session.user.roleName !== 'employee') {
         req.flash('error', 'You do not have permission to access this page.');
         return res.redirect('/dashboard');
     }

@@ -1,23 +1,24 @@
 -- Users table
 CREATE TABLE IF NOT EXISTS users (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
+    user_id SERIAL PRIMARY KEY,
+    firstname VARCHAR(50) NOT NULL,
+    lastname VARCHAR(50) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    roleName VARCHAR(20) NOT NULL DEFAULT 'customer',
-    createdAt TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+    role VARCHAR(20) NOT NULL DEFAULT 'Customer',
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Categories table
 CREATE TABLE IF NOT EXISTS categories (
-    id SERIAL PRIMARY KEY,
+    category_id SERIAL PRIMARY KEY,
     category_name VARCHAR(50) UNIQUE NOT NULL
 );
 
 -- Vehicles table
 CREATE TABLE IF NOT EXISTS vehicles (
-    id SERIAL PRIMARY KEY,
-    category_id INT NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
+    vehicle_id SERIAL PRIMARY KEY,
+    category_id INT NOT NULL REFERENCES categories(category_id) ON DELETE CASCADE,
     make VARCHAR(50) NOT NULL,
     model VARCHAR(50) NOT NULL,
     year INT NOT NULL CHECK (year > 1900 AND year < 2100),
@@ -30,16 +31,16 @@ CREATE TABLE IF NOT EXISTS vehicles (
 
 -- Vehicle images table
 CREATE TABLE IF NOT EXISTS vehicle_images (
-    id SERIAL PRIMARY KEY,
-    vehicle_id INT NOT NULL REFERENCES vehicles(id) ON DELETE CASCADE,
+    image_id SERIAL PRIMARY KEY,
+    vehicle_id INT NOT NULL REFERENCES vehicles(vehicle_id) ON DELETE CASCADE,
     image_path TEXT NOT NULL
 );
 
 -- Reviews table
 CREATE TABLE IF NOT EXISTS reviews (
-    id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    vehicle_id INT NOT NULL REFERENCES vehicles(id) ON DELETE CASCADE,
+    review_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    vehicle_id INT NOT NULL REFERENCES vehicles(vehicle_id) ON DELETE CASCADE,
     rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
     review_text TEXT NOT NULL,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
@@ -47,9 +48,9 @@ CREATE TABLE IF NOT EXISTS reviews (
 
 -- Service requests table
 CREATE TABLE IF NOT EXISTS service_requests (
-    id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    vehicle_id INT NOT NULL REFERENCES vehicles(id) ON DELETE CASCADE,
+    request_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    vehicle_id INT NOT NULL REFERENCES vehicles(vehicle_id) ON DELETE CASCADE,
     service_type VARCHAR(100) NOT NULL,
     notes TEXT,
     status VARCHAR(20) DEFAULT 'Submitted' CHECK (status IN ('Submitted', 'In Progress', 'Completed')),
@@ -59,7 +60,7 @@ CREATE TABLE IF NOT EXISTS service_requests (
 
 -- Contact messages table
 CREATE TABLE IF NOT EXISTS contact_messages (
-    id SERIAL PRIMARY KEY,
+    message_id SERIAL PRIMARY KEY,
     firstname VARCHAR(50) NOT NULL,
     lastname VARCHAR(50) NOT NULL,
     email VARCHAR(150) NOT NULL,
@@ -69,9 +70,9 @@ CREATE TABLE IF NOT EXISTS contact_messages (
 
 -- Rentals table
 CREATE TABLE IF NOT EXISTS rentals (
-    id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    vehicle_id INT NOT NULL REFERENCES vehicles(id) ON DELETE CASCADE,
+    rental_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    vehicle_id INT NOT NULL REFERENCES vehicles(vehicle_id) ON DELETE CASCADE,
     start_date TIMESTAMPTZ NOT NULL,
     end_date TIMESTAMPTZ NOT NULL,
     status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'active', 'completed', 'cancelled')),
