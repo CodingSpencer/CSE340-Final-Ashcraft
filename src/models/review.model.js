@@ -159,14 +159,14 @@ const createReview = async ({ user_id, vehicle_id, rating, review_text }) => {
             review_text: review_text.trim(),
             created_at: new Date().toISOString()
         };
+        db.reviews.push(review);
+        return review;
+    }
 
     // Check if user already has a review for this vehicle
     const existingReview = await findReviewByUserAndVehicle(user_id, vehicle_id);
     if (existingReview) {
         throw new Error("You have already reviewed this vehicle. You can edit your existing review instead.");
-    }
-        db.reviews.push(review);
-        return review;
     }
 
     const result = await pool.query(
@@ -176,7 +176,14 @@ const createReview = async ({ user_id, vehicle_id, rating, review_text }) => {
         [user_id, vehicle_id, rating, review_text.trim(), new Date().toISOString()]
     );
     
-    return result.rows[0];
+    return {
+        id: result.rows[0].review_id,
+        user_id: result.rows[0].user_id,
+        vehicle_id: result.rows[0].vehicle_id,
+        rating: result.rows[0].rating,
+        review_text: result.rows[0].review_text,
+        created_at: result.rows[0].created_at
+    };
 };
 
 const updateReview = async (id, { rating, review_text }) => {

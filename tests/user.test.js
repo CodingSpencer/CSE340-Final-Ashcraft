@@ -32,15 +32,15 @@ test('findUserByEmail returns null for non-existent email', async () => {
 
 // Test findUserById
 test('findUserById returns a user by id', async () => {
-    const user = await findUserById(1);
+    const user = await findUserById(4); // Admin user exists in database
     assert.ok(user);
-    assert.equal(user.id, 1);
+    assert.equal(user.id, 4); // Admin user has id 4
 });
 
 // Test createUser
 test('createUser creates a new user', async () => {
     try {
-        const user = await createUser('Test User', 'testuser@example.com', 'password123');
+        const user = await createUser('Test User', 'testuser@example.com', 'password123', 'Customer'); // Use valid role
         assert.ok(user.id);
         assert.equal(user.name, 'Test User');
         assert.equal(user.email, 'testuser@example.com');

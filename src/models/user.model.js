@@ -40,7 +40,7 @@ const findUserById = async (id) => {
     return result.rows[0] ? buildUserSession(result.rows[0]) : null;
 };
 
-const createUser = async (name, email, password, roleName = 'customer') => {
+const createUser = async (name, email, password, roleName = 'Customer') => {
     const db = await getDb();
     
     if (useMemoryStorage) {

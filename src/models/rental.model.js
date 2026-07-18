@@ -24,7 +24,7 @@ const hasDateOverlap = async (vehicleId, startDate, endDate, excludeRentalId = n
     }
     
     let query = `
-        SELECT id FROM rentals 
+        SELECT rental_id FROM rentals 
         WHERE status IN ('pending', 'active')
         AND vehicle_id = $1
         AND NOT (start_date >= $2 OR end_date <= $3)
@@ -32,7 +32,7 @@ const hasDateOverlap = async (vehicleId, startDate, endDate, excludeRentalId = n
     let params = [vehicleId, endDate, startDate];
     
     if (excludeRentalId) {
-        query += ' AND id != $4';
+        query += ' AND rental_id != $4';
         params.push(excludeRentalId);
     }
     
@@ -106,7 +106,15 @@ const createRental = async ({ user_id, vehicle_id, start_date, end_date }) => {
     // Set vehicle as unavailable
     await updateVehicle(vehicle_id, { availability: false });
 
-    return result.rows[0];
+    return {
+        id: result.rows[0].rental_id,
+        user_id: result.rows[0].user_id,
+        vehicle_id: result.rows[0].vehicle_id,
+        start_date: result.rows[0].start_date,
+        end_date: result.rows[0].end_date,
+        status: result.rows[0].status,
+        created_at: result.rows[0].created_at
+    };
 };
 
 const findRentalsByUser = async (userId) => {
@@ -207,7 +215,7 @@ const findRentalById = async (id) => {
     }
     
     const result = await pool.query(
-        `SELECT r.*, v.vehicle_id, v.year, v.make, v.model, v.image_path,
+        `SELECT r.*, v.vehicle_id, v.year, v.make, v.model,
                 u.user_id, u.firstname, u.lastname, u.email
          FROM rentals r
          LEFT JOIN vehicles v ON r.vehicle_id = v.vehicle_id
@@ -231,8 +239,7 @@ const findRentalById = async (id) => {
             id: r.vehicle_id,
             year: r.year,
             make: r.make,
-            model: r.model,
-            image_path: r.image_path
+            model: r.model
         } : null,
         user: r.user_id ? {
             id: r.user_id,
@@ -272,7 +279,7 @@ const updateRentalStatus = async (id, status) => {
     const result = await pool.query(
         `UPDATE rentals
          SET status = $1
-         WHERE id = $2
+         WHERE rental_id = $2
          RETURNING *`,
         [status, id]
     );
@@ -280,10 +287,10 @@ const updateRentalStatus = async (id, status) => {
     // If cancelled or completed, make vehicle available again
     if (status === 'cancelled' || status === 'completed') {
         const otherActive = await pool.query(
-            `SELECT id FROM rentals
+            `SELECT rental_id FROM rentals
              WHERE status IN ('pending', 'active')
              AND vehicle_id = $1
-             AND id != $2`,
+             AND rental_id != $2`,
             [rental.vehicle_id, id]
         );
         

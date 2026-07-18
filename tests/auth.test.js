@@ -32,7 +32,7 @@ test('registration and login create a session and reach the dashboard', async ()
       headers: {
         'content-type': 'application/x-www-form-urlencoded'
       },
-      body: 'name=Test+User&email=auth-test@example.com&password=secret123'
+      body: 'name=Test+User&email=auth-test@example.com&password=secret123&role=Customer'
     });
 
     assert.equal(registerResponse.status, 302);

@@ -41,8 +41,8 @@ test('findReviewsByUser returns reviews for a user', async () => {
 test('createReview creates a new review', async () => {
     try {
         const review = await createReview({
-            user_id: 1,
-            vehicle_id: 1,
+            user_id: 6, // Customer user exists in database
+            vehicle_id: 3, // Toyota Corolla exists in database
             rating: 5,
             review_text: 'Great car!'
         });
@@ -90,8 +90,8 @@ test('updateReview updates an existing review', async () => {
     let review;
     try {
         review = await createReview({
-            user_id: 1,
-            vehicle_id: 2,
+            user_id: 6, // Customer user exists in database
+            vehicle_id: 4, // Honda CR-V exists in database
             rating: 4,
             review_text: 'Good car'
         });
@@ -116,8 +116,8 @@ test('deleteReview removes a review', async () => {
     let review;
     try {
         review = await createReview({
-            user_id: 1,
-            vehicle_id: 3,
+            user_id: 6, // Customer user exists in database
+            vehicle_id: 5, // Ford Mustang exists in database
             rating: 3,
             review_text: 'Okay car'
         });

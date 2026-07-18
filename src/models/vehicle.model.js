@@ -205,11 +205,23 @@ const updateVehicle = async (id, updates) => {
 
     values.push(id);
     const result = await pool.query(
-        `UPDATE vehicles SET ${fields.join(', ')} WHERE vehicle_id = ${paramCount} RETURNING *`,
+        `UPDATE vehicles SET ${fields.join(', ')} WHERE vehicle_id = $${paramCount} RETURNING *`,
         values
     );
 
-    return result.rows[0] || null;
+    return result.rows[0] ? {
+        id: result.rows[0].vehicle_id,
+        category_id: result.rows[0].category_id,
+        make: result.rows[0].make,
+        model: result.rows[0].model,
+        year: result.rows[0].year,
+        mileage: result.rows[0].mileage,
+        price: result.rows[0].price,
+        description: result.rows[0].description,
+        availability: result.rows[0].availability,
+        image_path: result.rows[0].image_path,
+        category_name: result.rows[0].category_name
+    } : null;
 };
 
 const deleteVehicle = async (id) => {
