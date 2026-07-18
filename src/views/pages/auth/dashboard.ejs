@@ -6,20 +6,86 @@
 
 <div class="dashboard-links">
     <h2>Menu</h2>
-    <ul>
-        <li><a href="/inventory">Browse Inventory</a></li>
+    <div class="dashboard-cards">
+        <!-- Common for all roles -->
+        <a href="/inventory" class="dashboard-card">
+            <div class="dashboard-card-icon">🚗</div>
+            <div class="dashboard-card-content">
+                <h3>Browse Inventory</h3>
+                <p>View all available vehicles</p>
+            </div>
+        </a>
 
+        <!-- Customer specific -->
         <% if (user.roleName === 'customer') { %>
-            <li><a href="/my-rentals">My Rentals</a></li>
-            <li><a href="/my-reviews">My Reviews</a></li>
+            <a href="/my-rentals" class="dashboard-card">
+                <div class="dashboard-card-icon">📅</div>
+                <div class="dashboard-card-content">
+                    <h3>My Rentals</h3>
+                    <p>View your rental requests and cancel</p>
+                </div>
+            </a>
+            <a href="/my-reviews" class="dashboard-card">
+                <div class="dashboard-card-icon">⭐</div>
+                <div class="dashboard-card-content">
+                    <h3>My Reviews</h3>
+                    <p>View and manage your reviews</p>
+                </div>
+            </a>
         <% } %>
 
-        <% if (user.roleName === 'employee' || user.roleName === 'admin') { %>
-            <li><a href="/admin/rentals">Manage Rentals</a></li>
+        <!-- Employee specific -->
+        <% if (user.roleName === 'employee') { %>
+            <a href="/admin/rentals" class="dashboard-card">
+                <div class="dashboard-card-icon">📋</div>
+                <div class="dashboard-card-content">
+                    <h3>Manage Rentals</h3>
+                    <p>View and manage all rentals</p>
+                </div>
+            </a>
+            <a href="/admin/vehicles" class="dashboard-card">
+                <div class="dashboard-card-icon">🔧</div>
+                <div class="dashboard-card-content">
+                    <h3>Manage Vehicles</h3>
+                    <p>Update vehicle availability</p>
+                </div>
+            </a>
         <% } %>
-    </ul>
+
+        <!-- Admin specific -->
+        <% if (user.roleName === 'admin') { %>
+            <a href="/admin/rentals" class="dashboard-card">
+                <div class="dashboard-card-icon">📋</div>
+                <div class="dashboard-card-content">
+                    <h3>Manage Rentals</h3>
+                    <p>View and manage all rentals</p>
+                </div>
+            </a>
+            <a href="/admin/vehicles" class="dashboard-card">
+                <div class="dashboard-card-icon">🚘</div>
+                <div class="dashboard-card-content">
+                    <h3>Manage Vehicles</h3>
+                    <p>Add, edit, and delete vehicles</p>
+                </div>
+            </a>
+            <a href="/admin/users" class="dashboard-card">
+                <div class="dashboard-card-icon">👥</div>
+                <div class="dashboard-card-content">
+                    <h3>Manage Users</h3>
+                    <p>Add/remove employees and customers</p>
+                </div>
+            </a>
+            <a href="/admin/reviews" class="dashboard-card">
+                <div class="dashboard-card-icon">⭐</div>
+                <div class="dashboard-card-content">
+                    <h3>Manage Reviews</h3>
+                    <p>Delete inappropriate reviews</p>
+                </div>
+            </a>
+        <% } %>
+    </div>
 </div>
 
 <form method="POST" action="/logout">
-    <button type="submit">Log out</button>
+    <button type="submit" class="btn btn-danger">Log out</button>
 </form>
