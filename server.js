@@ -9,6 +9,7 @@ import inventoryRoutes from './src/routes/inventory.routes.js';
 import rentalRoutes from './src/routes/rental.routes.js';
 import reviewRoutes from './src/routes/review.routes.js';
 import { authContextMiddleware, flashMiddleware, sessionMiddleware } from './src/config/session.js';
+import { initializeDemoData } from './src/config/db.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -42,7 +43,13 @@ app.use('/inventory', inventoryRoutes);
 app.use('/', rentalRoutes);
 app.use('/', reviewRoutes);
 
+// Initialize database on startup
 if (process.env.NODE_ENV !== 'test') {
+    // Initialize demo data if needed
+    initializeDemoData().catch((err) => {
+        console.error('Error initializing demo data:', err);
+    });
+    
     app.listen(3000, () => {
         console.log('Server is running on: http://localhost:3000');
     });

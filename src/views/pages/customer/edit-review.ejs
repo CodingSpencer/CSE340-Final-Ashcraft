@@ -1,35 +1,31 @@
-<%- include('../../partials/header') %>
-<main>
-    <%- include('../../partials/flash-messages') %>
-    <h1><%= title %></h1>
+<%- include('../../partials/flash-messages') %>
+<h1><%= title %></h1>
+
+<% if (review) { %>
+    <div class="vehicle-info">
+        <p><strong>Vehicle:</strong> <%= review.vehicle ? `${review.vehicle.year} ${review.vehicle.make} ${review.vehicle.model}` : 'Unknown Vehicle' %></p>
+    </div>
     
-    <% if (review) { %>
-        <div class="vehicle-info">
-            <p><strong>Vehicle:</strong> <%= review.vehicle ? `${review.vehicle.year} ${review.vehicle.make} ${review.vehicle.model}` : 'Unknown Vehicle' %></p>
+    <form method="POST" action="/my-reviews/<%= review.id %>/update" class="review-form">
+        <div class="form-group">
+            <label for="rating">Rating:</label>
+            <select id="rating" name="rating" required>
+                <option value="">Select a rating</option>
+                <option value="5" <%= review.rating == 5 ? 'selected' : '' %>>5 Stars</option>
+                <option value="4" <%= review.rating == 4 ? 'selected' : '' %>>4 Stars</option>
+                <option value="3" <%= review.rating == 3 ? 'selected' : '' %>>3 Stars</option>
+                <option value="2" <%= review.rating == 2 ? 'selected' : '' %>>2 Stars</option>
+                <option value="1" <%= review.rating == 1 ? 'selected' : '' %>>1 Star</option>
+            </select>
         </div>
-        
-        <form method="POST" action="/my-reviews/<%= review.id %>/update" class="review-form">
-            <div class="form-group">
-                <label for="rating">Rating:</label>
-                <select id="rating" name="rating" required>
-                    <option value="">Select a rating</option>
-                    <option value="5" <%= review.rating == 5 ? 'selected' : '' %>>5 Stars</option>
-                    <option value="4" <%= review.rating == 4 ? 'selected' : '' %>>4 Stars</option>
-                    <option value="3" <%= review.rating == 3 ? 'selected' : '' %>>3 Stars</option>
-                    <option value="2" <%= review.rating == 2 ? 'selected' : '' %>>2 Stars</option>
-                    <option value="1" <%= review.rating == 1 ? 'selected' : '' %>>1 Star</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="review_text">Your Review:</label>
-                <textarea id="review_text" name="review_text" rows="4" required><%= review.review_text %></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Update Review</button>
-            <a href="/my-reviews" class="btn btn-secondary">Cancel</a>
-        </form>
-    <% } else { %>
-        <p>Review not found.</p>
-        <a href="/my-reviews" class="btn">Back to My Reviews</a>
-    <% } %>
-</main>
-<%- include('../../partials/footer') %>
+        <div class="form-group">
+            <label for="review_text">Your Review:</label>
+            <textarea id="review_text" name="review_text" rows="4" required><%= review.review_text %></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Review</button>
+        <a href="/my-reviews" class="btn btn-secondary">Cancel</a>
+    </form>
+<% } else { %>
+    <p>Review not found.</p>
+    <a href="/my-reviews" class="btn">Back to My Reviews</a>
+<% } %>

@@ -1,39 +1,81 @@
-import { getDb } from '../config/db.js';
+import { getDb, pool, useMemoryStorage } from '../config/db.js';
 
 const listCategories = async () => {
     const db = await getDb();
-    return db.categories;
+    
+    if (useMemoryStorage) {
+        return db.categories;
+    }
+    
+    const result = await pool.query('SELECT * FROM categories ORDER BY category_name');
+    return result.rows;
 };
 
 const findCategoryById = async (id) => {
     const db = await getDb();
-    return db.categories.find((cat) => cat.id === Number(id)) || null;
+    
+    if (useMemoryStorage) {
+        return db.categories.find((cat) => cat.id === Number(id)) || null;
+    }
+    
+    const result = await pool.query(
+        'SELECT * FROM categories WHERE id = $1',
+        [id]
+    );
+    return result.rows[0] || null;
 };
 
 const createCategory = async (categoryName) => {
     const db = await getDb();
-    const category = {
-        id: db.nextCategoryId++,
-        category_name: categoryName
-    };
-    db.categories.push(category);
-    return category;
+    
+    if (useMemoryStorage) {
+        const category = {
+            id: db.nextCategoryId++,
+            category_name: categoryName
+        };
+        db.categories.push(category);
+        return category;
+    }
+    
+    const result = await pool.query(
+        'INSERT INTO categories (category_name) VALUES ($1) RETURNING *',
+        [categoryName]
+    );
+    return result.rows[0];
 };
 
 const updateCategory = async (id, categoryName) => {
     const db = await getDb();
-    const category = db.categories.find((cat) => cat.id === Number(id));
-    if (!category) return null;
-    category.category_name = categoryName;
-    return category;
+    
+    if (useMemoryStorage) {
+        const category = db.categories.find((cat) => cat.id === Number(id));
+        if (!category) return null;
+        category.category_name = categoryName;
+        return category;
+    }
+    
+    const result = await pool.query(
+        'UPDATE categories SET category_name = $1 WHERE id = $2 RETURNING *',
+        [categoryName, id]
+    );
+    return result.rows[0] || null;
 };
 
 const deleteCategory = async (id) => {
     const db = await getDb();
-    const index = db.categories.findIndex((cat) => cat.id === Number(id));
-    if (index === -1) return false;
-    db.categories.splice(index, 1);
-    return true;
+    
+    if (useMemoryStorage) {
+        const index = db.categories.findIndex((cat) => cat.id === Number(id));
+        if (index === -1) return false;
+        db.categories.splice(index, 1);
+        return true;
+    }
+    
+    const result = await pool.query(
+        'DELETE FROM categories WHERE id = $1',
+        [id]
+    );
+    return result.rowCount > 0;
 };
 
 export {
