@@ -1,7 +1,7 @@
 <% if (flashMessages && flashMessages.length) { %>
 <div class="flash-messages">
     <% flashMessages.forEach((flash) => { %>
-        <div class="flash-message flash-<%= flash.type %> <% if (flash.type === 'success') { %>flash-auto-fade<% } %>" data-auto-fade="<%= flash.type === 'success' ? 'true' : 'false' %>">
+        <div class="flash-message flash-<%= flash.type %> flash-auto-fade" data-auto-fade="true">
             <%= flash.message %>
         </div>
     <% }) %>

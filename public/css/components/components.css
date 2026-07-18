@@ -15,8 +15,9 @@
 
 /* Flash Message Auto-Fade */
 .flash-auto-fade {
-    animation: fadeOut 3s ease-in-out forwards;
-    animation-delay: 2s;
+    animation: fadeOut 15s ease-in-out forwards;
+    animation-delay: 1s;
+    animation-fill-mode: forwards;
 }
 
 @keyframes fadeOut {
