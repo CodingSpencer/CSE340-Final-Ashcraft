@@ -202,7 +202,7 @@ const updateReview = async (id, { rating, review_text }) => {
     const result = await pool.query(
         `UPDATE reviews
          SET rating = $1, review_text = $2
-         WHERE id = $3
+         WHERE review_id = $3
          RETURNING *`,
         [rating, review_text.trim(), id]
     );
